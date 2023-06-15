@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_social_clean/src/config/app_theme.dart';
+import 'package:flutter_social_clean/src/shared/presentation/widgets/widgets.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,7 +30,7 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Flutter App with Clean Architecture"),
       ),
-      body: Column(),
+      bottomNavigationBar: const CustomNavBar(),
     );
   }
 }
