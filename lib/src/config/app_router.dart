@@ -1,8 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import '../../main.dart';
+import 'package:flutter_social_clean/src/features/auth/presentation/pages/login_screen.dart';
+import 'package:flutter_social_clean/src/features/auth/presentation/pages/signup_screen.dart';
+import 'package:flutter_social_clean/src/features/feed/presentation/pages/discover_screen.dart';
 import 'package:go_router/go_router.dart';
+
+import '../features/feed/presentation/pages/feed_screen.dart';
 
 class AppRouter {
   AppRouter();
@@ -12,16 +16,12 @@ class AppRouter {
       GoRoute(
         path: "/",
         name: "feed",
-        //TODO: change to feed screen
-        builder: (context, state) => const HomeScreen(),
+        builder: (context, state) => const FeedScreen(),
       ),
       GoRoute(
         path: "/discover",
         name: "discover",
-        //TODO: change to discover screen
-        builder: (context, state) => Container(
-          child: Placeholder(),
-        ),
+        builder: (context, state) => const DiscoverScreen(),
         routes: [
           //SUB LEVEL ROUTES: /discover/:userId
           GoRoute(
@@ -35,17 +35,13 @@ class AppRouter {
       GoRoute(
         path: "/login",
         name: "login",
-        //TODO: change to login screen
-        builder: (context, state) => Container(
-          child: Placeholder(),
-        ),
+        builder: (context, state) => const LoginScreen(),
         routes: [
           //SUB LEVEL ROUTES: /login/signup
           GoRoute(
             name: "signup",
             path: 'signup',
-            //TODO: change to user screen
-            builder: (context, state) => Container(),
+            builder: (context, state) => const SignupScreen(),
           ),
         ],
       ),

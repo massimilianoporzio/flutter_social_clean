@@ -6,6 +6,7 @@ class CustomTheme {
         useMaterial3: true,
         scaffoldBackgroundColor: Colors.black87,
         appBarTheme: const AppBarTheme(
+            centerTitle: true,
             foregroundColor: Colors.white,
             backgroundColor: Colors.transparent, //app bar transparent bg
             elevation: 0,

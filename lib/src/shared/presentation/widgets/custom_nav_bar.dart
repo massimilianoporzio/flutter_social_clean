@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomNavBar extends StatelessWidget {
   const CustomNavBar({super.key});
@@ -15,12 +16,16 @@ class CustomNavBar extends StatelessWidget {
           children: [
             IconButton(
               iconSize: 30,
-              onPressed: () {},
+              onPressed: () {
+                context.goNamed('feed');
+              },
               icon: const Icon(Icons.home),
             ),
             IconButton(
               iconSize: 30,
-              onPressed: () {},
+              onPressed: () {
+                context.goNamed('discover');
+              },
               icon: const Icon(Icons.search),
             ),
             IconButton(
