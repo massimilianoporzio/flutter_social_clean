@@ -9,8 +9,7 @@ class CustomTheme {
             foregroundColor: Colors.white,
             backgroundColor: Colors.transparent, //app bar transparent bg
             elevation: 0,
-            iconTheme:
-                const IconThemeData(color: Colors.white) //all icons white
+            iconTheme: IconThemeData(color: Colors.white) //all icons white
             ),
         textTheme: const TextTheme(
           titleLarge: TextStyle(color: Colors.white),
