@@ -14,7 +14,7 @@ class AppRouter {
     routes: <GoRoute>[
       //TOP LEVEL: EVERY route HAS ITS OWN NAVIGATON STACK
       GoRoute(
-        path: "/",
+        path: "/feed",
         name: "feed",
         builder: (context, state) => const FeedScreen(),
       ),
@@ -33,7 +33,7 @@ class AppRouter {
         ],
       ),
       GoRoute(
-        path: "/login",
+        path: "/",
         name: "login",
         builder: (context, state) => const LoginScreen(),
         routes: [
