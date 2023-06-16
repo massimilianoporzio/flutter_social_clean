@@ -41,9 +41,7 @@ class LoginScreen extends StatelessWidget {
 }
 
 class _SignupRedirect extends StatelessWidget {
-  const _SignupRedirect({
-    super.key,
-  });
+  const _SignupRedirect();
 
   @override
   Widget build(BuildContext context) {
@@ -69,9 +67,7 @@ class _SignupRedirect extends StatelessWidget {
 }
 
 class _LoginButton extends StatelessWidget {
-  const _LoginButton({
-    super.key,
-  });
+  const _LoginButton();
 
   @override
   Widget build(BuildContext context) {
@@ -93,9 +89,7 @@ class _LoginButton extends StatelessWidget {
 }
 
 class _Password extends StatelessWidget {
-  const _Password({
-    super.key,
-  });
+  const _Password();
 
   @override
   Widget build(BuildContext context) {
@@ -108,9 +102,7 @@ class _Password extends StatelessWidget {
 }
 
 class _Username extends StatelessWidget {
-  const _Username({
-    super.key,
-  });
+  const _Username();
 
   @override
   Widget build(BuildContext context) {

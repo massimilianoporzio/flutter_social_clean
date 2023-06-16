@@ -13,12 +13,12 @@ class CustomTheme {
             iconTheme: IconThemeData(color: Colors.white) //all icons white
             ),
         textTheme: const TextTheme(
-          titleLarge: TextStyle(color: Colors.white),
-          titleMedium: TextStyle(color: Colors.white),
-          titleSmall: TextStyle(color: Colors.white),
-          bodyLarge: TextStyle(color: Colors.white),
-          bodyMedium: TextStyle(color: Colors.white),
-          bodySmall: TextStyle(color: Colors.white),
+          titleLarge: TextStyle(color: Colors.white, fontFamily: 'Montserrat'),
+          titleMedium: TextStyle(color: Colors.white, fontFamily: 'Montserrat'),
+          titleSmall: TextStyle(color: Colors.white, fontFamily: 'Montserrat'),
+          bodyLarge: TextStyle(color: Colors.white, fontFamily: 'Montserrat'),
+          bodyMedium: TextStyle(color: Colors.white, fontFamily: 'Montserrat'),
+          bodySmall: TextStyle(color: Colors.white, fontFamily: 'Montserrat'),
         ),
         iconTheme: const IconThemeData(color: Colors.white));
   }
