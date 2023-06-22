@@ -1,9 +1,10 @@
 import 'package:equatable/equatable.dart';
+import 'package:formz/formz.dart';
 
 import '../../../../shared/domain/entities/user.dart';
 
 class LoggedInUser extends User with EquatableMixin {
-  final String? email;
+  final Email? email;
   const LoggedInUser({
     required super.id,
     required super.username,
@@ -15,8 +16,8 @@ class LoggedInUser extends User with EquatableMixin {
 
   static const empty = LoggedInUser(
     id: '-',
-    username: '-',
-    email: '-',
+    username: Username.pure(),
+    email: Email.pure(),
   );
 
   @override
@@ -24,4 +25,54 @@ class LoggedInUser extends User with EquatableMixin {
 
   @override
   bool? get stringify => true;
+
+  LoggedInUser copyWith({
+    Email? email,
+    Username? username, //sono value objects
+    String? imagePath,
+    int? followers,
+    int? followings,
+  }) {
+    return LoggedInUser(
+      email: email ?? this.email,
+      id: '',
+      username: username ?? username,
+    );
+  }
+}
+
+enum EmailValidationError { invalid }
+
+class Email extends FormzInput<String, EmailValidationError> {
+  const Email.pure() : super.pure('');
+  const Email.dirty([String value = '']) : super.pure(value);
+
+  static final RegExp _emailRegExp = RegExp(
+    r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$',
+  );
+
+  @override
+  EmailValidationError? validator(String value) {
+    return _emailRegExp.hasMatch(value) ? null : EmailValidationError.invalid;
+  }
+}
+
+//* riguarda la validazione delle password in fase di registrazione
+enum PasswordValidationError { invalid }
+
+class Password extends FormzInput<String, PasswordValidationError> {
+  const Password.pure() : super.pure('');
+
+  const Password.dirty([String value = '']) : super.pure(value);
+  //solo lettere e numeri ma entrambe e di almeno 8 caratteri
+  static final RegExp _passwordRegExp = RegExp(
+    r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$',
+  );
+
+  @override
+  PasswordValidationError? validator(String value) {
+    return _passwordRegExp.hasMatch(value)
+        ? null
+        : PasswordValidationError.invalid;
+  }
 }
