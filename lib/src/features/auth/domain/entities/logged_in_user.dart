@@ -36,7 +36,7 @@ class LoggedInUser extends User with EquatableMixin {
     return LoggedInUser(
       email: email ?? this.email,
       id: '',
-      username: username ?? username,
+      username: username ?? this.username,
     );
   }
 }

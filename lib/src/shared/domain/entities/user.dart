@@ -3,7 +3,7 @@ import 'package:formz/formz.dart';
 
 class User extends Equatable {
   final String id;
-  final Username? username;
+  final Username username;
   final int followers;
   final int followings;
   final String? imagePath;
