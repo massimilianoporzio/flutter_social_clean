@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
 import 'package:flutter_social_clean/src/features/auth/domain/entities/auth_status.dart';
@@ -18,6 +19,12 @@ abstract class MockAuthDatasource {
 
 class MockAuthDatasourceImpl implements MockAuthDatasource {
   final _controller = StreamController<AuthStatus>();
+  final CacheClient _cache;
+  MockAuthDatasourceImpl({
+    CacheClient? cache,
+  }) : _cache = cache ?? CacheClient();
+
+  static const userCacheKey = '__user_cache_key';
   @override
   Stream<AuthStatus> get status async* {
     await Future<void>.delayed(const Duration(seconds: 1)); //simulates delay
@@ -27,32 +34,115 @@ class MockAuthDatasourceImpl implements MockAuthDatasource {
     yield* _controller.stream;
   }
 
+  void _updateLoggedInUser({
+    String? id,
+    Username? username,
+    Email? email,
+  }) {
+    LoggedInUser loggedInUser =
+        _cache.read(key: userCacheKey) ?? LoggedInUser.empty;
+
+    _cache.write(
+      key: userCacheKey,
+      value: loggedInUser.copyWith(
+        id: id,
+        username: username,
+        email: email,
+      ),
+    );
+  }
+
   @override
   Future<LoggedInUser> get loggedInUser {
-    //TODO: get actually loggedInUser
     return Future.delayed(
       const Duration(milliseconds: 300),
       () {
-        return LoggedInUser.empty; //PER ORA RESTITUISCO SEMPRE EMPTY
+        return _cache.read(key: userCacheKey) ?? LoggedInUser.empty;
+        // return LoggedInUser.empty; //PER ORA RESTITUISCO SEMPRE EMPTY
       },
     );
   }
 
   @override
   Future<void> login({required Username username, required Password password}) {
-    // TODO: implement login
-    throw UnimplementedError();
+    return Future.delayed(
+      const Duration(milliseconds: 300),
+      () {
+        //cerco se sto facendo login con user che esiste
+        for (final user in _allUsers) {
+          if (user.username.value == username.value) {
+            _controller.add(AuthStatus
+                .authenticated); //mando in stream che sono autenticato
+            return; //esco dalla callback
+          }
+        }
+      },
+    );
   }
 
   @override
   Future<void> logout() {
-    // TODO: implement logout
-    throw UnimplementedError();
+    return Future.delayed(
+      const Duration(milliseconds: 300),
+      () {
+        //TODO: Remove data of the currently logged in user
+        //mi rimetto in stato non autenticato
+        _controller.add(AuthStatus.unauthenticated);
+      },
+    );
   }
 
   @override
   Future<void> signup({required LoggedInUser loggedInUser}) {
-    // TODO: implement signup
-    throw UnimplementedError();
+    return Future.delayed(
+      const Duration(milliseconds: 300),
+      () {
+        _allUsers.add(loggedInUser); //il db è questa lista in memoria
+        //mando sullo stream un nuovo stato visto che mi sono appena segnato
+        //AGGIORNO DATI UTENTE NELLA CACHE
+        _updateLoggedInUser(
+          id: loggedInUser.id,
+          username: loggedInUser.username,
+          email: loggedInUser.email,
+        );
+        _controller
+            .add(AuthStatus.unauthenticated); //non autenticato va al login
+      },
+    );
+  }
+
+  //IL MIO DB
+  final List<User> _allUsers = <User>[
+    const User(
+      id: 'user_1',
+      username: Username.dirty('Massimo'),
+      imagePath: 'assets/images/image_1.jpg',
+    ),
+    const User(
+      id: 'user_2',
+      username: Username.dirty('Sarah'),
+      imagePath: 'assets/images/image_2.jpg',
+    ),
+    const User(
+      id: 'user_3',
+      username: Username.dirty('John'),
+      imagePath: 'assets/images/image_3.jpg',
+    ),
+  ];
+}
+
+//*ORA FACCIO UNA CACHE LOCALE
+class CacheClient {
+  final Map<String, Object> _cache;
+  CacheClient() : _cache = <String, Object>{};
+
+  void write<T extends Object>({required String key, required T value}) {
+    _cache[key] = value;
+  }
+
+  T? read<T extends Object>({required String key}) {
+    final value = _cache[key];
+    if (value is T) return value;
+    return null;
   }
 }

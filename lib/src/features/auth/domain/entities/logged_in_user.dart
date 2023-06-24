@@ -27,6 +27,7 @@ class LoggedInUser extends User with EquatableMixin {
   bool? get stringify => true;
 
   LoggedInUser copyWith({
+    String? id,
     Email? email,
     Username? username, //sono value objects
     String? imagePath,
@@ -35,7 +36,7 @@ class LoggedInUser extends User with EquatableMixin {
   }) {
     return LoggedInUser(
       email: email ?? this.email,
-      id: '',
+      id: id ?? '',
       username: username ?? this.username,
     );
   }
