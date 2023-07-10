@@ -107,8 +107,8 @@ class MockAuthDatasourceImpl implements MockAuthDatasource {
           username: loggedInUser.username,
           email: loggedInUser.email,
         );
-        _controller
-            .add(AuthStatus.unauthenticated); //non autenticato va al login
+        _controller.add(
+            AuthStatus.unauthenticated); //non autenticato quindi va al login
       },
     );
   }
