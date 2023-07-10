@@ -24,7 +24,8 @@ class MockAuthDatasourceImpl implements MockAuthDatasource {
     CacheClient? cache,
   }) : _cache = cache ?? CacheClient();
 
-  static const userCacheKey = '__user_cache_key';
+  static const userCacheKey =
+      '__user_cache_key'; //chiave sotto cui metto l'utente loggato
   @override
   Stream<AuthStatus> get status async* {
     await Future<void>.delayed(const Duration(seconds: 1)); //simulates delay
