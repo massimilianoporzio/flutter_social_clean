@@ -87,7 +87,11 @@ class MockAuthDatasourceImpl implements MockAuthDatasource {
     return Future.delayed(
       const Duration(milliseconds: 300),
       () {
-        //TODO: Remove data of the currently logged in user
+        //al posto id user nella cache metto empy
+        _cache.write(
+          key: userCacheKey,
+          value: LoggedInUser.empty,
+        );
         //mi rimetto in stato non autenticato
         _controller.add(AuthStatus.unauthenticated);
       },
