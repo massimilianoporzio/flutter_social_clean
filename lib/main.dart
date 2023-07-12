@@ -4,8 +4,6 @@ import 'package:flutter_social_clean/src/config/app_router.dart';
 import 'package:flutter_social_clean/src/config/app_theme.dart';
 import 'package:flutter_social_clean/src/features/auth/data/datasources/mock_auth_datasource.dart';
 import 'package:flutter_social_clean/src/features/auth/data/repositories/auth_repository_impl.dart';
-import 'package:flutter_social_clean/src/features/auth/presentation/blocs/auth/auth_bloc.dart';
-import 'package:flutter_social_clean/src/features/auth/presentation/blocs/login/login_cubit.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,7 +27,7 @@ class MyApp extends StatelessWidget {
       ],
       //poi do' accesso a TUTTA la APP ai miei bloc
       child: MultiBlocProvider(
-        providers: [
+        providers: const [
           // BlocProvider(
           //   create: (context) => AuthBloc(
           //       logoutUser: logoutUser,
