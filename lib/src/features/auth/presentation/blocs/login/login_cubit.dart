@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_social_clean/src/features/auth/data/datasources/mock_auth_datasource.dart';
 import 'package:flutter_social_clean/src/logs/bloc_logger.dart';
 import '../../../domain/entities/logged_in_user.dart';
 import '../../../domain/usecases/login_user.dart';
@@ -71,6 +72,11 @@ class LoginCubit extends Cubit<LoginState> with BlocLoggy {
       //ho risposta (non eccezione) da API (da backend)
       emit(state.copyWith(
           status: FormzSubmissionStatus.success)); //emetto stato per dire OK!
+    } on LoginWithUsernameAndPasswordFailure catch (error) {
+      emit(state.copyWith(
+        errorText: error.message,
+        status: FormzSubmissionStatus.failure,
+      ));
     } catch (err) {
       emit(state.copyWith(
           status:

@@ -18,7 +18,10 @@ class LoginScreen extends StatelessWidget {
       ),
       body: BlocListener<LoginCubit, LoginState>(
         listener: (context, state) {
-          // TODO: implement listener
+          if (state.status.isFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.errorText ?? "Auth failure")));
+          }
         },
         child: const SafeArea(
             child: Padding(
