@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_social_clean/src/logs/bloc_logger.dart';
 import '../../../domain/entities/logged_in_user.dart';
 import '../../../domain/usecases/login_user.dart';
 import 'package:formz/formz.dart';
@@ -10,7 +11,7 @@ import '../../../../../shared/domain/entities/user.dart';
 
 part 'login_state.dart';
 
-class LoginCubit extends Cubit<LoginState> {
+class LoginCubit extends Cubit<LoginState> with BlocLoggy {
   //private! uso lista iniziale nel costruttore
   final LoginUser _loginUserUsecase;
   LoginCubit({required LoginUser loginUser})
@@ -20,31 +21,33 @@ class LoginCubit extends Cubit<LoginState> {
   //METODI
   //il value arriva dal form
   void usernameChanged(String value) {
+    loggy.debug("password from UI is: $value");
     final username = Username.dirty(value); //creo il value object
-    final status = Formz.validate([
+    final formStatus = Formz.validate([
       username,
       state.password,
     ]);
 
     emit(state.copyWith(
         username: username,
-        status: status
-            ? FormzSubmissionStatus.initial
+        status: formStatus
+            ? FormzSubmissionStatus.success
             : FormzSubmissionStatus
                 .failure)); //ho emesso lo stato con nuovo username e lo status pari a se il nuovo
     // username e la password rimnasta come prima sono validi
+    loggy.debug("username is valid? : ${state.status}");
   }
 
   void passwordChanged(String value) {
     final password = Password.dirty(value);
-    final status = Formz.validate([
+    final formStatus = Formz.validate([
       state.username,
       password,
     ]);
     emit(state.copyWith(
         password: password,
-        status: status
-            ? FormzSubmissionStatus.initial
+        status: formStatus
+            ? FormzSubmissionStatus.success
             : FormzSubmissionStatus.failure));
   }
 

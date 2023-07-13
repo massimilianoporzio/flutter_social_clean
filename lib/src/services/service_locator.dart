@@ -9,6 +9,8 @@ import 'package:flutter_social_clean/src/features/auth/domain/usecases/signup_us
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:get_it/get_it.dart';
 
+import '../features/auth/presentation/blocs/login/login_cubit.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -40,4 +42,6 @@ Future<void> init() async {
         getAuthStatus: sl<GetAuthStatus>(),
         getLoggedInUser: sl<GetLoggedInUser>(),
       ));
+
+  sl.registerFactory<LoginCubit>(() => LoginCubit(loginUser: sl<LoginUser>()));
 }

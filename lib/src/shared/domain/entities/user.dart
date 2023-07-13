@@ -47,9 +47,10 @@ class Username extends FormzInput<String, UsernameValidationError> {
     r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+$',
   );
   @override
-  validator(value) {
-    return _usernameRegExp.hasMatch(value)
+  UsernameValidationError? validator(value) {
+    UsernameValidationError? error = _usernameRegExp.hasMatch(value)
         ? null
         : UsernameValidationError.invalid;
+    return error;
   }
 }

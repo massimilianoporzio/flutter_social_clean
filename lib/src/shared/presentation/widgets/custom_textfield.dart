@@ -19,6 +19,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onChanged: onChanged,
       keyboardType: textInputType,
       obscureText: obscureText,
       style:
@@ -28,6 +29,7 @@ class CustomTextField extends StatelessWidget {
         fillColor: Colors.white,
         hintText: labelText,
         helperText: labelText,
+        errorText: errorText,
         helperStyle: const TextStyle(color: Colors.white),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.black),
