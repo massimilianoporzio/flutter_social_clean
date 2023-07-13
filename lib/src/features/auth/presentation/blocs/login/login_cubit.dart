@@ -24,40 +24,43 @@ class LoginCubit extends Cubit<LoginState> with BlocLoggy {
   void usernameChanged(String value) {
     loggy.debug("password from UI is: $value");
     final username = Username.dirty(value); //creo il value object
-    final formStatus = Formz.validate([
+    //forza la validazione
+    Formz.validate([
       username,
       state.password,
     ]);
+    final formValid = username.isValid && state.password.isValid;
 
     emit(state.copyWith(
         username: username,
-        status: formStatus
-            ? FormzSubmissionStatus.success
-            : FormzSubmissionStatus
-                .failure)); //ho emesso lo stato con nuovo username e lo status pari a se il nuovo
+        isPure: false,
+        isValid:
+            formValid)); //ho emesso lo stato con nuovo username e lo status pari a se il nuovo
     // username e la password rimnasta come prima sono validi
     loggy.debug("username is valid? : ${state.status}");
   }
 
   void passwordChanged(String value) {
     final password = Password.dirty(value);
-    final formStatus = Formz.validate([
+
+    Formz.validate([
       state.username,
       password,
     ]);
+    final formValid = password.isValid && state.username.isValid;
     emit(state.copyWith(
-        password: password,
-        status: formStatus
-            ? FormzSubmissionStatus.success
-            : FormzSubmissionStatus.failure));
+      password: password,
+      isPure: false,
+      isValid: formValid,
+    ));
   }
 
   FutureOr<void> loginWithCredentials() async {
-    emit(state.copyWith(
-        status: FormzSubmissionStatus
-            .inProgress)); //valido con la logica di business
-    if (!state.status.isSuccess) {
-      return; //esco e non faccio nulla se non è success
+    // emit(state.copyWith(
+    //     status: FormzSubmissionStatus
+    //         .inProgress)); //valido con la logica di business
+    if (!state.isValid) {
+      return; //esco e non faccio nulla se non è valido il form
     }
 
     emit(state.copyWith(

@@ -86,7 +86,7 @@ class _LoginButton extends StatelessWidget {
     return BlocBuilder<LoginCubit, LoginState>(
       buildWhen: (previous, current) {
         //build solo se lo stato del login cubit è cambiato
-        return previous.status != current.status;
+        return previous != current;
       },
       builder: (context, state) {
         return state.status.isInProgress
@@ -100,7 +100,7 @@ class _LoginButton extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0))),
                 onPressed: () {
-                  state.status.isSuccess
+                  state.isValid
                       ? context.read<LoginCubit>().loginWithCredentials()
                       : ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(

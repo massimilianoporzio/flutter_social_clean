@@ -7,12 +7,18 @@ class LoginState extends Equatable {
   final Password password;
   //lo stato del form
   final FormzSubmissionStatus status;
+  //se gli input sono validi
+  final bool isValid;
+  //se il form non è mai stato toccato
+  final bool isPure;
   //se c'è un errore
   final String? errorText;
 
   const LoginState({
     this.username = const Username.pure(),
     this.password = const Password.pure(), //sono empty di default
+    this.isPure = true,
+    this.isValid = false,
     this.status = FormzSubmissionStatus.initial, //non ancora validato
     this.errorText,
   });
@@ -24,6 +30,8 @@ class LoginState extends Equatable {
         username,
         password,
         status,
+        isValid,
+        isPure,
         errorText,
       ];
 
@@ -34,12 +42,16 @@ class LoginState extends Equatable {
     Username? username,
     Password? password,
     FormzSubmissionStatus? status,
+    bool? isValid,
+    bool? isPure,
     String? errorText,
   }) {
     return LoginState(
       username: username ?? this.username,
       password: password ?? this.password,
       status: status ?? this.status,
+      isValid: isValid ?? this.isValid,
+      isPure: isPure ?? this.isPure,
       errorText: errorText ?? this.errorText,
     );
   }
