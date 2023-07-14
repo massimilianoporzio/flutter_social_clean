@@ -33,6 +33,7 @@ class LoginCubit extends Cubit<LoginState> with BlocLoggy {
 
     emit(state.copyWith(
         username: username,
+        status: FormzSubmissionStatus.initial,
         isPure: false,
         isValid:
             formValid)); //ho emesso lo stato con nuovo username e lo status pari a se il nuovo
@@ -50,6 +51,7 @@ class LoginCubit extends Cubit<LoginState> with BlocLoggy {
     final formValid = password.isValid && state.username.isValid;
     emit(state.copyWith(
       password: password,
+      status: FormzSubmissionStatus.initial,
       isPure: false,
       isValid: formValid,
     ));

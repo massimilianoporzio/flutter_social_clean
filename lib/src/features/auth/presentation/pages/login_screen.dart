@@ -1,6 +1,8 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/login/login_cubit.dart';
+import 'package:flutter_social_clean/src/shared/presentation/widgets/awesome_snackbar.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loggy/loggy.dart';
@@ -19,8 +21,12 @@ class LoginScreen extends StatelessWidget {
       body: BlocListener<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state.status.isFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.errorText ?? "Auth failure")));
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(buildAwesomeSnackbar(
+                  message: state.errorText ?? 'Auth failure',
+                  title: 'Auth failure',
+                  contentType: ContentType.failure));
           }
         },
         child: const SafeArea(
@@ -100,11 +106,16 @@ class _LoginButton extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0))),
                 onPressed: () {
-                  state.isValid
-                      ? context.read<LoginCubit>().loginWithCredentials()
-                      : ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(
-                              'Check your username and password: ${state.status}')));
+                  if (state.isValid) {
+                    context.read<LoginCubit>().loginWithCredentials();
+                  } else {
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(buildAwesomeSnackbar(
+                          message: 'Check your username and password',
+                          title: "Error",
+                          contentType: ContentType.failure));
+                  }
                 },
                 child: Text(
                   'Login',
