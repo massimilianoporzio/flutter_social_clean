@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loggy/loggy.dart';
-import 'src/logs/bloc_observer.dart';
 import 'src/services/service_locator.dart' as di; //dependecy injection
 
 import 'src/my_app.dart';
