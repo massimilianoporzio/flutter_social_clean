@@ -40,6 +40,8 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Flutter Demo',
             theme: CustomTheme.theme(),
+            //DEVO LEGGERE IL BLOC dal context perché NON è un singleton se no riparte
+            //la subscription
             routerConfig: AppRouter(context.read<AuthBloc>()).router,
           );
         }),
