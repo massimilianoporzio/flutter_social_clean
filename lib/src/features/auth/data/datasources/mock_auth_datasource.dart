@@ -72,8 +72,7 @@ class MockAuthDatasourceImpl implements MockAuthDatasource {
       () {
         //cerco se sto facendo login con user che esiste
         for (final user in _allUsers) {
-          final utente = user as User;
-          if (utente.username.value == username.value) {
+          if (user.username.value == username.value) {
             _updateLoggedInUser(id: user.id, username: user.username);
             _controller.add(AuthStatus
                 .authenticated); //mando in stream che sono autenticato
