@@ -77,7 +77,7 @@ class MockAuthDatasourceImpl implements MockAuthDatasource {
                 .authenticated); //mando in stream che sono autenticato
             return; //esco dalla callback
           }
-          throw LoginWithUsernameAndPasswordFailure.fromCode('user-not-found');
+          throw LoginWithUsernameAndPasswordFailure.fromCode(kUserNotFound);
         }
       },
     );
@@ -161,10 +161,10 @@ class LoginWithUsernameAndPasswordFailure implements Exception {
   });
   factory LoginWithUsernameAndPasswordFailure.fromCode(String code) {
     switch (code) {
-      case 'invalid-username':
+      case kInvalidUser:
         return const LoginWithUsernameAndPasswordFailure(
             message: 'Username is not valid');
-      case 'user-not-found':
+      case kUserNotFound:
         return const LoginWithUsernameAndPasswordFailure(
             message:
                 'No User found with the provided credentials. Please, create an account');
@@ -175,3 +175,6 @@ class LoginWithUsernameAndPasswordFailure implements Exception {
     }
   }
 }
+
+const String kUserNotFound = 'user-not-found';
+const String kInvalidUser = 'invalid-username';
