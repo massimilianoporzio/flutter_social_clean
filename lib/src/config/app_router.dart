@@ -61,8 +61,8 @@ class AppRouter {
         final bool isLoggedIn =
             authBloc.state.status == AuthStatus.authenticated;
         //è nella pagina di login?
-        final isLogginIn = state.location == loginLocation;
-        final isSigninUp = state.location == signupLocation;
+        final isLogginIn = state.matchedLocation == loginLocation;
+        final isSigninUp = state.matchedLocation == signupLocation;
         //se non è loggato e non sta faecndo né login né signup lo mando a login
         if (!isLoggedIn && !isLogginIn && !isSigninUp) {
           return '/login';

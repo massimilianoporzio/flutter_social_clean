@@ -35,16 +35,15 @@ class MyApp extends StatelessWidget {
             create: (context) => sl<LoginCubit>(),
           ),
         ],
-        child: Builder(builder: (context) {
-          return MaterialApp.router(
-            debugShowCheckedModeBanner: false,
-            title: 'Flutter Demo',
-            theme: CustomTheme.theme(),
-            //DEVO LEGGERE IL BLOC dal context perché NON è un singleton se no riparte
-            //la subscription
-            routerConfig: AppRouter(context.read<AuthBloc>()).router,
-          );
-        }),
+        child: MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: CustomTheme.theme(),
+          //DEVO LEGGERE IL BLOC dal context perché NON è un singleton se no riparte
+          //la subscription
+          //! NO SE USO AUTHBLOC COME SINGLETON non i serve un Provider per leggere dal context
+          routerConfig: AppRouter(sl()).router,
+        ),
       ),
     );
   }

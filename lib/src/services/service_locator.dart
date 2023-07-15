@@ -36,8 +36,9 @@ Future<void> init() async {
 
   //*BLOCS / CUBITS
 
-  //Auth
-  sl.registerFactory<AuthBloc>(() => AuthBloc(
+  //Auth SINGLETON PARLA A TUTTI GLI ALTRI BLOC E RICEVE EVENTI DA LORO
+  //POSSO USARLO NEL ROUTER CON DEPENDENCY INJECTION
+  sl.registerLazySingleton<AuthBloc>(() => AuthBloc(
         logoutUser: sl<LogoutUser>(),
         getAuthStatus: sl<GetAuthStatus>(),
         getLoggedInUser: sl<GetLoggedInUser>(),
