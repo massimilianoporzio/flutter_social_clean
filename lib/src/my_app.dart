@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: CustomTheme.theme(),
-          routerConfig: AppRouter().router,
+          routerConfig: AppRouter(sl<AuthBloc>()).router,
         ),
       ),
     );

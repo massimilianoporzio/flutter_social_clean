@@ -1,20 +1,26 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import 'package:flutter_social_clean/src/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:flutter_social_clean/src/features/auth/presentation/pages/login_screen.dart';
 import 'package:flutter_social_clean/src/features/auth/presentation/pages/signup_screen.dart';
 import 'package:flutter_social_clean/src/features/feed/presentation/pages/discover_screen.dart';
-import 'package:go_router/go_router.dart';
 
 import '../features/feed/presentation/pages/feed_screen.dart';
 
 class AppRouter {
-  AppRouter();
+  final AuthBloc authBloc;
+  AppRouter(
+    this.authBloc,
+  );
   late final GoRouter router = GoRouter(
     routes: <GoRoute>[
       //TOP LEVEL: EVERY route HAS ITS OWN NAVIGATON STACK
       GoRoute(
-        path: "/feed",
+        path: "/", //pagina principale
         name: "feed",
         builder: (context, state) => const FeedScreen(),
       ),
@@ -33,7 +39,7 @@ class AppRouter {
         ],
       ),
       GoRoute(
-        path: "/",
+        path: "/login",
         name: "login",
         builder: (context, state) => const LoginScreen(),
         routes: [
