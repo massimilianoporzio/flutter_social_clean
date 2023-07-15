@@ -35,12 +35,14 @@ class MyApp extends StatelessWidget {
             create: (context) => sl<LoginCubit>(),
           ),
         ],
-        child: MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
-          theme: CustomTheme.theme(),
-          routerConfig: AppRouter(sl<AuthBloc>()).router,
-        ),
+        child: Builder(builder: (context) {
+          return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            title: 'Flutter Demo',
+            theme: CustomTheme.theme(),
+            routerConfig: AppRouter(context.read<AuthBloc>()).router,
+          );
+        }),
       ),
     );
   }

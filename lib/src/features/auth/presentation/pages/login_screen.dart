@@ -141,8 +141,9 @@ class _Password extends StatelessWidget with UiLoggy {
       builder: (context, state) {
         return CustomTextField(
           labelText: "Password",
-          errorText:
-              state.password.isNotValid ? "The password is not valid" : null,
+          errorText: state.password.isNotValid && !state.isPure
+              ? "The password is not valid"
+              : null,
           onChanged: (password) {
             loggy.debug("OnChanged Password");
             context.read<LoginCubit>().passwordChanged(password);
@@ -168,8 +169,9 @@ class _Username extends StatelessWidget with UiLoggy {
       builder: (context, state) {
         return CustomTextField(
           labelText: "Username",
-          errorText:
-              state.username.isNotValid ? "The username is not valid" : null,
+          errorText: state.username.isNotValid && !state.isPure
+              ? "The username is not valid"
+              : null,
           onChanged: (username) {
             loggy.debug("OnChanged username");
             context.read<LoginCubit>().usernameChanged(
