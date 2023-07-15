@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -22,6 +24,8 @@ class CustomTextField extends StatelessWidget {
       onChanged: onChanged,
       keyboardType: textInputType,
       obscureText: obscureText,
+      scrollPadding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       style:
           Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.black),
       decoration: InputDecoration(
@@ -31,6 +35,13 @@ class CustomTextField extends StatelessWidget {
         helperText: labelText,
         errorText: errorText,
         helperStyle: const TextStyle(color: Colors.white),
+        border: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.black),
+            borderRadius: BorderRadius.circular(10.0)),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red.shade900),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.black),
           borderRadius: BorderRadius.circular(10.0),

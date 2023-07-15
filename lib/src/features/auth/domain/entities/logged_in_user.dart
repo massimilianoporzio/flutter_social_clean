@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 
@@ -54,7 +55,8 @@ class Email extends FormzInput<String, EmailValidationError> {
 
   @override
   EmailValidationError? validator(String value) {
-    return _emailRegExp.hasMatch(value) ? null : EmailValidationError.invalid;
+    return EmailValidator.validate(value) ? null : EmailValidationError.invalid;
+    // return _emailRegExp.hasMatch(value) ? null : EmailValidationError.invalid;
   }
 }
 

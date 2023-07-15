@@ -7,6 +7,7 @@ import 'package:flutter_social_clean/src/features/auth/domain/usecases/login_use
 import 'package:flutter_social_clean/src/features/auth/domain/usecases/logout_user.dart';
 import 'package:flutter_social_clean/src/features/auth/domain/usecases/signup_user.dart';
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/auth/auth_bloc.dart';
+import 'package:flutter_social_clean/src/features/auth/presentation/blocs/signup/signup_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 import '../features/auth/presentation/blocs/login/login_cubit.dart';
@@ -45,4 +46,6 @@ Future<void> init() async {
       ));
 
   sl.registerFactory<LoginCubit>(() => LoginCubit(loginUser: sl<LoginUser>()));
+  sl.registerFactory<SignupCubit>(
+      () => SignupCubit(signupUser: sl<SignupUser>()));
 }

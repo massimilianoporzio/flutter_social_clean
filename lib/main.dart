@@ -15,7 +15,7 @@ void main() {
   );
   di.init(); //init del service locator
   //observer di tutti i bloc
-  Bloc.observer = AppBlocObserver();
+  //Bloc.observer = AppBlocObserver();
   runApp(const MyApp());
 }
 

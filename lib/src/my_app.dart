@@ -5,6 +5,7 @@ import 'package:flutter_social_clean/src/config/app_theme.dart';
 import 'package:flutter_social_clean/src/features/auth/data/datasources/mock_auth_datasource.dart';
 import 'package:flutter_social_clean/src/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/login/login_cubit.dart';
+import 'package:flutter_social_clean/src/features/auth/presentation/blocs/signup/signup_cubit.dart';
 
 import 'features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'services/service_locator.dart';
@@ -33,6 +34,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => sl<LoginCubit>(),
+          ),
+          BlocProvider(
+            create: (context) => sl<SignupCubit>(),
           ),
         ],
         child: MaterialApp.router(

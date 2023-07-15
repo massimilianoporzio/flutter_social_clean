@@ -44,7 +44,7 @@ class Username extends FormzInput<String, UsernameValidationError> {
 
   //regex per i caratteri usati
   static final RegExp _usernameRegExp = RegExp(
-    r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+$',
+    r'^[a-zA-Z0-9#$%&’*+/=?^_`{|}~-]+$', //TOLTO ! dai caratteri da usare
   );
   @override
   UsernameValidationError? validator(value) {

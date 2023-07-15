@@ -22,7 +22,7 @@ class LoginCubit extends Cubit<LoginState> with BlocLoggy {
   //METODI
   //il value arriva dal form
   void usernameChanged(String value) {
-    loggy.debug("password from UI is: $value");
+    loggy.debug("username from UI is: $value");
     final username = Username.dirty(value); //creo il value object
     //forza la validazione
     Formz.validate([

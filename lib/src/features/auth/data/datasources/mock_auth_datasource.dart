@@ -72,14 +72,15 @@ class MockAuthDatasourceImpl implements MockAuthDatasource {
       () {
         //cerco se sto facendo login con user che esiste
         for (final user in _allUsers) {
-          if (user.username.value == username.value) {
+          final utente = user as User;
+          if (utente.username.value == username.value) {
             _updateLoggedInUser(id: user.id, username: user.username);
             _controller.add(AuthStatus
                 .authenticated); //mando in stream che sono autenticato
             return; //esco dalla callback
           }
-          throw LoginWithUsernameAndPasswordFailure.fromCode(kUserNotFound);
         }
+        throw LoginWithUsernameAndPasswordFailure.fromCode(kUserNotFound);
       },
     );
   }
@@ -102,21 +103,17 @@ class MockAuthDatasourceImpl implements MockAuthDatasource {
 
   @override
   Future<void> signup({required LoggedInUser loggedInUser}) {
-    return Future.delayed(
-      const Duration(milliseconds: 300),
-      () {
-        _allUsers.add(loggedInUser); //il db è questa lista in memoria
-        //mando sullo stream un nuovo stato visto che mi sono appena segnato
-        //AGGIORNO DATI UTENTE NELLA CACHE
-        _updateLoggedInUser(
-          id: loggedInUser.id,
-          username: loggedInUser.username,
-          email: loggedInUser.email,
-        );
-        _controller.add(
-            AuthStatus.unauthenticated); //non autenticato quindi va al login
-      },
-    );
+    return Future.delayed(const Duration(milliseconds: 300), () {
+      _allUsers.add(loggedInUser);
+
+      _updateLoggedInUser(
+        id: loggedInUser.id,
+        username: loggedInUser.username,
+        email: loggedInUser.email,
+      );
+
+      _controller.add(AuthStatus.unauthenticated);
+    });
   }
 
   //IL MIO DB
