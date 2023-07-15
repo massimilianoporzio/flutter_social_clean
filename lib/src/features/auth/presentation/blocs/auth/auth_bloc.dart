@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_social_clean/src/shared/domain/entities/user.dart';
+
 import '../../../domain/usecases/get_auth_status.dart';
 import '../../../domain/usecases/get_logged_in_user.dart';
 import '../../../domain/usecases/logout_user.dart';
