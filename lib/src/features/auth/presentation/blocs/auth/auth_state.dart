@@ -17,6 +17,10 @@ class AuthState extends Equatable {
       : this._(
           status: AuthStatus.unauthenticated,
         );
+  const AuthState.signedUp()
+      : this._(
+          status: AuthStatus.signedUp,
+        );
 
   @override
   List<Object> get props => [status, user];

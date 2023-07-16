@@ -63,6 +63,7 @@ class AppRouter {
         //è nella pagina di login?
         final isLogginIn = state.matchedLocation == loginLocation;
         final isSigninUp = state.matchedLocation == signupLocation;
+        final isSignedUp = authBloc.state.status == AuthStatus.signedUp;
         //se non è loggato e non sta faecndo né login né signup lo mando a login
         if (!isLoggedIn && !isLogginIn && !isSigninUp) {
           return '/login';
@@ -75,6 +76,10 @@ class AppRouter {
         if (isLoggedIn && isSigninUp) {
           return '/';
         }
+        if (isSignedUp) {
+          return '/login';
+        }
+
         return null; //caso di default non fa redirection
       },
       refreshListenable:

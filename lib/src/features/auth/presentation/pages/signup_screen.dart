@@ -109,7 +109,8 @@ class _SignupButton extends StatelessWidget {
                   if (state.isValid) {
                     context.read<SignupCubit>().signupWithCredentials();
                     //e poi ritorno alla pagina di prima
-                    context.pop();
+
+                    // context.pop();
                   } else {
                     ScaffoldMessenger.of(context)
                       ..hideCurrentSnackBar()

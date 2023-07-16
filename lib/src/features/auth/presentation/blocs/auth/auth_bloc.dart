@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_social_clean/src/logs/bloc_logger.dart';
 
 import '../../../domain/usecases/get_auth_status.dart';
 import '../../../domain/usecases/get_logged_in_user.dart';
@@ -15,7 +16,7 @@ import '../../../domain/entities/logged_in_user.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 
-class AuthBloc extends Bloc<AuthEvent, AuthState> {
+class AuthBloc extends Bloc<AuthEvent, AuthState> with BlocLoggy {
   final LogoutUser _logoutUserUseCase;
   final GetAuthStatus _getAuthStatusUseCase;
   final GetLoggedInUser _getLoggedInUserUseCase;
@@ -43,16 +44,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthGetStatus event,
     Emitter<AuthState> emit,
   ) async {
-    debugPrint('Get AuthGetStatus: ${event.status}');
+    loggy.debug('Get AuthGetStatus: ${event.status}');
     switch (event.status) {
       case AuthStatus.unauthenticated:
         return emit(const AuthState.unauthenticated());
       case AuthStatus.unknown:
         return emit(const AuthState.unknown());
+      case AuthStatus.signedUp:
+        return emit(const AuthState.signedUp());
       case AuthStatus.authenticated:
         //mi prendo l'utente loggato
         final user = await _getLoggedInUserUseCase(NoParams());
-        debugPrint(user.toString());
+        loggy.debug(user.toString());
         if (user != LoggedInUser.empty) {
           return emit(AuthState.authenticated(user: user));
         }

@@ -116,10 +116,9 @@ class SignupCubit extends Cubit<SignupState> with BlocLoggy {
               email: state.email,
               imagePath: 'assets/images/image_1.jpg' //TODO renderlo uploadable
               )));
+      emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (err) {
       emit(state.copyWith(status: FormzSubmissionStatus.failure));
     }
-    emit(state.copyWith(status: FormzSubmissionStatus.success //si inizia!
-        ));
   }
 }

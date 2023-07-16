@@ -111,7 +111,7 @@ class MockAuthDatasourceImpl implements MockAuthDatasource {
         email: loggedInUser.email,
       );
 
-      _controller.add(AuthStatus.unauthenticated);
+      _controller.add(AuthStatus.signedUp);
     });
   }
 
