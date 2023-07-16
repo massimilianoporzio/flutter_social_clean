@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_social_clean/src/shared/domain/entities/user.dart';
 
+import '../../../services/service_locator.dart';
+import '../mappers/user_mapper.dart';
+
 class UserModel extends Equatable {
   final String id;
   final String username;
@@ -62,7 +65,7 @@ class UserModel extends Equatable {
     return result;
   }
 
-  factory UserModel.fromMap(Map<String, dynamic> json) {
+  factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       id: json['id'] ?? '',
       username: json['username'],
@@ -72,20 +75,9 @@ class UserModel extends Equatable {
     );
   }
   factory UserModel.fromEntity(User user) {
-    return UserModel(
-        id: user.id,
-        username: user.username.value,
-        followers: user.followers,
-        followings: user.followings,
-        imagePath: user.imagePath);
+    return sl<UserMapper>().fromEntity(user);
   }
 
   String toJson() => json.encode(toMap());
-  User toEntity() => User(
-        id: id,
-        username: Username.dirty(username),
-        imagePath: imagePath,
-        followers: followers,
-        followings: followings,
-      );
+  User toEntity() => sl<UserMapper>().toEntity(this);
 }
