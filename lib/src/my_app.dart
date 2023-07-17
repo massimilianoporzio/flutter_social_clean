@@ -6,6 +6,7 @@ import 'package:flutter_social_clean/src/features/auth/data/datasources/mock_aut
 import 'package:flutter_social_clean/src/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/login/login_cubit.dart';
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/signup/signup_cubit.dart';
+import 'package:flutter_social_clean/src/features/feed/presentation/blocs/feed/feed_bloc.dart';
 
 import 'features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'services/service_locator.dart';
@@ -38,6 +39,8 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => sl<SignupCubit>(),
           ),
+          //!non metto FeedBloc a livello di APP ma nel router
+          //!così creo un FeedBloc solo quando navigo nella route dei Feed
         ],
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,

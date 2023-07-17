@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_social_clean/src/features/auth/domain/entities/auth_status.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,7 +11,9 @@ import 'package:flutter_social_clean/src/features/auth/presentation/pages/login_
 import 'package:flutter_social_clean/src/features/auth/presentation/pages/signup_screen.dart';
 import 'package:flutter_social_clean/src/features/feed/presentation/pages/discover_screen.dart';
 
+import '../features/feed/presentation/blocs/feed/feed_bloc.dart';
 import '../features/feed/presentation/pages/feed_screen.dart';
+import '../services/service_locator.dart';
 
 class AppRouter {
   final AuthBloc authBloc;
@@ -23,7 +26,11 @@ class AppRouter {
         GoRoute(
           path: "/", //pagina principale
           name: "feed",
-          builder: (context, state) => const FeedScreen(),
+          // builder: (context, state) => const FeedScreen(),
+          builder: (context, state) => BlocProvider(
+            create: (context) => sl<FeedBloc>(),
+            child: const FeedScreen(),
+          ),
         ),
         GoRoute(
           path: "/discover",

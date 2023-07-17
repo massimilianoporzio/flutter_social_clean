@@ -8,6 +8,11 @@ import 'package:flutter_social_clean/src/features/auth/domain/usecases/logout_us
 import 'package:flutter_social_clean/src/features/auth/domain/usecases/signup_user.dart';
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/signup/signup_cubit.dart';
+import 'package:flutter_social_clean/src/features/feed/data/datasources/mock_feed_datasource.dart';
+import 'package:flutter_social_clean/src/features/feed/data/repositories/post_repository_impl.dart';
+import 'package:flutter_social_clean/src/features/feed/domain/repositories/post_repository.dart';
+import 'package:flutter_social_clean/src/features/feed/domain/usecases/get_posts.dart';
+import 'package:flutter_social_clean/src/features/feed/presentation/blocs/feed/feed_bloc.dart';
 import 'package:flutter_social_clean/src/shared/data/mappers/user_mapper.dart';
 import 'package:get_it/get_it.dart';
 
@@ -20,10 +25,17 @@ Future<void> init() async {
   //*DATASOURCES:
   //AUTH
   sl.registerLazySingleton<MockAuthDatasource>(() => MockAuthDatasourceImpl());
+  //FEED
+  sl.registerLazySingleton<MockFeedDatasource>(() => MockFeedDatasourceImpl());
+
   //*REPOSITORIES:
   //AUTH:
   sl.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(authDatasource: sl<MockAuthDatasource>()));
+  //FEED:
+  sl.registerLazySingleton<PostRepository>(
+      () => PostRepositoryImpl(mockFeedDatasource: sl<MockFeedDatasource>()));
+
   //*USECASES
   //AUTH:
   sl.registerLazySingleton<GetAuthStatus>(
@@ -36,6 +48,10 @@ Future<void> init() async {
       () => LogoutUser(authRepository: sl<AuthRepository>()));
   sl.registerLazySingleton<SignupUser>(
       () => SignupUser(authRepository: sl<AuthRepository>()));
+
+  //FEED:
+  sl.registerLazySingleton<GetPosts>(
+      () => GetPosts(postRepository: sl<PostRepository>()));
 
   //*BLOCS / CUBITS
 
@@ -50,6 +66,10 @@ Future<void> init() async {
   sl.registerFactory<LoginCubit>(() => LoginCubit(loginUser: sl<LoginUser>()));
   sl.registerFactory<SignupCubit>(
       () => SignupCubit(signupUser: sl<SignupUser>()));
+
+  //FEED
+  sl.registerLazySingleton<FeedBloc>(
+      () => FeedBloc(getPostsUsecase: sl<GetPosts>()));
 
   //*MAPPERS
   sl.registerLazySingleton<UserMapper>(() => UserMapper());
