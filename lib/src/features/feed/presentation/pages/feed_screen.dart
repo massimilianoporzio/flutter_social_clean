@@ -24,17 +24,20 @@ class FeedScreen extends StatelessWidget with UiLoggy {
             // loggy.debug(state.posts);
 
             return SingleChildScrollView(
-                child: ListView(
-                    shrinkWrap: true, //prendo solo lo spazio che serve
-                    physics:
-                        const NeverScrollableScrollPhysics(), //perché siamo già dentro un SingleChildScrollView
-                    children: state.posts
-                        .map((post) => CustomVideoPlayer(
-                              assetPath: post.assetPath,
-                              username: post.user.username.value,
-                              caption: post.caption,
-                            ))
-                        .toList()));
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: state.posts.length,
+                itemBuilder: (context, index) {
+                  final post = state.posts[index];
+                  return CustomVideoPlayer(
+                    assetPath: post.assetPath,
+                    username: post.user.username.value,
+                    caption: post.caption,
+                  );
+                },
+              ),
+            );
           } else {
             return const Text('Something went wrong!');
           }
