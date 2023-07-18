@@ -3,7 +3,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_social_clean/src/features/auth/domain/entities/auth_status.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/auth/auth_bloc.dart';
@@ -21,77 +20,79 @@ class AppRouter {
     this.authBloc,
   );
   late final GoRouter router = GoRouter(
-      routes: <GoRoute>[
-        //TOP LEVEL: EVERY route HAS ITS OWN NAVIGATON STACK
-        GoRoute(
-          path: "/", //pagina principale
-          name: "feed",
-          // builder: (context, state) => const FeedScreen(),
-          builder: (context, state) => BlocProvider(
-            create: (context) => sl<FeedBloc>(),
-            child: const FeedScreen(),
+    routes: <GoRoute>[
+      //TOP LEVEL: EVERY route HAS ITS OWN NAVIGATON STACK
+      GoRoute(
+        path: "/", //pagina principale
+        name: "feed",
+        // builder: (context, state) => const FeedScreen(),
+        builder: (context, state) => BlocProvider(
+          create: (context) => sl<FeedBloc>()
+            ..add(
+                FeedGetPosts()), //passo il bloc e agg evento per caricare i post
+          child: const FeedScreen(),
+        ),
+      ),
+      GoRoute(
+        path: "/discover",
+        name: "discover",
+        builder: (context, state) => const DiscoverScreen(),
+        routes: [
+          //SUB LEVEL ROUTES: /discover/:userId
+          GoRoute(
+            name: "user",
+            path: ':userId',
+            //TODO: change to user screen
+            builder: (context, state) => Container(),
           ),
-        ),
-        GoRoute(
-          path: "/discover",
-          name: "discover",
-          builder: (context, state) => const DiscoverScreen(),
-          routes: [
-            //SUB LEVEL ROUTES: /discover/:userId
-            GoRoute(
-              name: "user",
-              path: ':userId',
-              //TODO: change to user screen
-              builder: (context, state) => Container(),
-            ),
-          ],
-        ),
-        GoRoute(
-          path: "/login",
-          name: "login",
-          builder: (context, state) => const LoginScreen(),
-          routes: [
-            //SUB LEVEL ROUTES: /login/signup
-            GoRoute(
-              name: "signup",
-              path: 'signup',
-              builder: (context, state) => const SignupScreen(),
-            ),
-          ],
-        ),
-      ], //TOP LEVEL
-      redirect: (context, state) {
-        final loginLocation = state.namedLocation('login');
-        final signupLocation = state.namedLocation('signup');
+        ],
+      ),
+      GoRoute(
+        path: "/login",
+        name: "login",
+        builder: (context, state) => const LoginScreen(),
+        routes: [
+          //SUB LEVEL ROUTES: /login/signup
+          GoRoute(
+            name: "signup",
+            path: 'signup',
+            builder: (context, state) => const SignupScreen(),
+          ),
+        ],
+      ),
+    ], //TOP LEVEL
+    // redirect: (context, state) {
+    //   final loginLocation = state.namedLocation('login');
+    //   final signupLocation = state.namedLocation('signup');
 
-        //è loggato?
-        final bool isLoggedIn =
-            authBloc.state.status == AuthStatus.authenticated;
-        //è nella pagina di login?
-        final isLogginIn = state.matchedLocation == loginLocation;
-        final isSigninUp = state.matchedLocation == signupLocation;
-        final isSignedUp = authBloc.state.status == AuthStatus.signedUp;
-        //se non è loggato e non sta faecndo né login né signup lo mando a login
-        if (!isLoggedIn && !isLogginIn && !isSigninUp) {
-          return '/login';
-        }
-        //se stava facendo login ed è autenticato mando a feed
-        if (isLoggedIn && isLogginIn) {
-          return '/';
-        }
-        //se stava facendo signup e mi loggo direttamente mando a feed
-        if (isLoggedIn && isSigninUp) {
-          return '/';
-        }
-        if (isSignedUp) {
-          return '/login';
-        }
+    //   //è loggato?
+    //   final bool isLoggedIn =
+    //       authBloc.state.status == AuthStatus.authenticated;
+    //   //è nella pagina di login?
+    //   final isLogginIn = state.matchedLocation == loginLocation;
+    //   final isSigninUp = state.matchedLocation == signupLocation;
+    //   final isSignedUp = authBloc.state.status == AuthStatus.signedUp;
+    //   //se non è loggato e non sta faecndo né login né signup lo mando a login
+    //   if (!isLoggedIn && !isLogginIn && !isSigninUp) {
+    //     return '/login';
+    //   }
+    //   //se stava facendo login ed è autenticato mando a feed
+    //   if (isLoggedIn && isLogginIn) {
+    //     return '/';
+    //   }
+    //   //se stava facendo signup e mi loggo direttamente mando a feed
+    //   if (isLoggedIn && isSigninUp) {
+    //     return '/';
+    //   }
+    //   if (isSignedUp) {
+    //     return '/login';
+    //   }
 
-        return null; //caso di default non fa redirection
-      },
-      refreshListenable:
-          GoRouterRefreshStream(authBloc.stream) //ASCOLTA lo stream di authBloc
-      );
+    //   return null; //caso di default non fa redirection
+    // },
+    // refreshListenable:
+    //     GoRouterRefreshStream(authBloc.stream) //ASCOLTA lo stream di authBloc
+  );
 }
 
 /// Converts a [Stream] into a [Listenable]
