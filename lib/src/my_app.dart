@@ -6,7 +6,6 @@ import 'package:flutter_social_clean/src/features/auth/data/datasources/mock_aut
 import 'package:flutter_social_clean/src/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/login/login_cubit.dart';
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/signup/signup_cubit.dart';
-import 'package:flutter_social_clean/src/features/feed/presentation/blocs/feed/feed_bloc.dart';
 
 import 'features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'services/service_locator.dart';
