@@ -22,19 +22,22 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
 
   @override
   void initState() {
-    controller = VideoPlayerController.asset(widget.assetPath);
-    controller.initialize().then((_) {
-      setState(() {
-        //forzo il build
+    controller = VideoPlayerController.asset(widget.assetPath)
+      ..initialize().then((_) {
+        controller.setVolume(0);
+        controller.play();
+        controller.setLooping(true); //metto in loop
+        setState(() {
+          //forzo il build
+        });
       });
-    });
-    controller.setLooping(true); //metto in loop
-    controller.play();
+
     super.initState();
   }
 
   @override
   void dispose() {
+    debugPrint("DISPOSING");
     controller.dispose();
     super.dispose();
   }
@@ -45,6 +48,9 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
       //video non pronto
       return const SizedBox.shrink();
     } else {
+      setState(() {
+        controller.play();
+      });
       return GestureDetector(
         onTap: () {
           setState(() {

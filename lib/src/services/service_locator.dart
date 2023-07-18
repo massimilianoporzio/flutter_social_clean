@@ -68,8 +68,7 @@ Future<void> init() async {
       () => SignupCubit(signupUser: sl<SignupUser>()));
 
   //FEED
-  sl.registerLazySingleton<FeedBloc>(
-      () => FeedBloc(getPostsUsecase: sl<GetPosts>()));
+  sl.registerFactory<FeedBloc>(() => FeedBloc(getPostsUsecase: sl<GetPosts>()));
 
   //*MAPPERS
   sl.registerLazySingleton<UserMapper>(() => UserMapper());
