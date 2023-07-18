@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loggy/loggy.dart';
-
 import '../../../../shared/presentation/widgets/widgets.dart';
 import '../blocs/feed/feed_bloc.dart';
 
@@ -11,9 +10,6 @@ class FeedScreen extends StatelessWidget with UiLoggy {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Feeds"),
-      ),
       bottomNavigationBar: const CustomNavBar(),
       body: BlocBuilder<FeedBloc, FeedState>(
         builder: (context, state) {
@@ -25,8 +21,20 @@ class FeedScreen extends StatelessWidget with UiLoggy {
             );
           }
           if (state is FeedLoaded) {
-            loggy.debug(state.posts);
-            return Container();
+            // loggy.debug(state.posts);
+
+            return SingleChildScrollView(
+                child: ListView(
+                    shrinkWrap: true, //prendo solo lo spazio che serve
+                    physics:
+                        const NeverScrollableScrollPhysics(), //perché siamo già dentro un SingleChildScrollView
+                    children: state.posts
+                        .map((post) => CustomVideoPlayer(
+                              assetPath: post.assetPath,
+                              username: post.user.username.value,
+                              caption: post.caption,
+                            ))
+                        .toList()));
           } else {
             return const Text('Something went wrong!');
           }
