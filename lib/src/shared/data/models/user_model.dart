@@ -2,15 +2,24 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_social_clean/src/shared/domain/entities/user.dart';
+import 'package:hive/hive.dart';
 
 import '../../../services/service_locator.dart';
 import '../mappers/user_mapper.dart';
 
+part 'user_model.g.dart';
+
+@HiveType(typeId: 0)
 class UserModel extends Equatable {
+  @HiveField(0)
   final String id;
+  @HiveField(1)
   final String username;
+  @HiveField(2)
   final int followers;
+  @HiveField(03)
   final int followings;
+  @HiveField(4)
   final String? imagePath;
 
   const UserModel({
