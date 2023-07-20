@@ -8,6 +8,7 @@ import 'package:flutter_social_clean/src/features/auth/domain/usecases/logout_us
 import 'package:flutter_social_clean/src/features/auth/domain/usecases/signup_user.dart';
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/signup/signup_cubit.dart';
+import 'package:flutter_social_clean/src/features/feed/data/datasources/local_feed_datasource.dart';
 import 'package:flutter_social_clean/src/features/feed/data/datasources/mock_feed_datasource.dart';
 import 'package:flutter_social_clean/src/features/feed/data/repositories/post_repository_impl.dart';
 import 'package:flutter_social_clean/src/features/feed/data/repositories/user_repository_impl.dart';
@@ -31,6 +32,8 @@ Future<void> init() async {
   sl.registerLazySingleton<MockAuthDatasource>(() => MockAuthDatasourceImpl());
   //FEED
   sl.registerLazySingleton<MockFeedDatasource>(() => MockFeedDatasourceImpl());
+  sl.registerLazySingleton<LocalFeedDatasource>(
+      () => LocalFeedDatasourceImpl());
 
   //*REPOSITORIES:
   //AUTH:
@@ -38,7 +41,11 @@ Future<void> init() async {
       () => AuthRepositoryImpl(authDatasource: sl<MockAuthDatasource>()));
   //FEED:
   sl.registerLazySingleton<PostRepository>(
-      () => PostRepositoryImpl(mockFeedDatasource: sl<MockFeedDatasource>()));
+    () => PostRepositoryImpl(
+      mockFeedDatasource: sl<MockFeedDatasource>(),
+      localFeedDatasource: sl<LocalFeedDatasource>(),
+    ),
+  );
   sl.registerLazySingleton<UserRepository>(
       () => UserRepositoryImpl(mockFeedDatasource: sl<MockFeedDatasource>()));
 
