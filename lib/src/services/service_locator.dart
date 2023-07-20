@@ -10,8 +10,12 @@ import 'package:flutter_social_clean/src/features/auth/presentation/blocs/auth/a
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/signup/signup_cubit.dart';
 import 'package:flutter_social_clean/src/features/feed/data/datasources/mock_feed_datasource.dart';
 import 'package:flutter_social_clean/src/features/feed/data/repositories/post_repository_impl.dart';
+import 'package:flutter_social_clean/src/features/feed/data/repositories/user_repository_impl.dart';
 import 'package:flutter_social_clean/src/features/feed/domain/repositories/post_repository.dart';
+import 'package:flutter_social_clean/src/features/feed/domain/repositories/user_repository.dart';
 import 'package:flutter_social_clean/src/features/feed/domain/usecases/get_posts.dart';
+import 'package:flutter_social_clean/src/features/feed/domain/usecases/get_users.dart';
+import 'package:flutter_social_clean/src/features/feed/presentation/blocs/discover/discover_bloc.dart';
 import 'package:flutter_social_clean/src/features/feed/presentation/blocs/feed/feed_bloc.dart';
 import 'package:flutter_social_clean/src/shared/data/mappers/user_mapper.dart';
 import 'package:get_it/get_it.dart';
@@ -35,6 +39,8 @@ Future<void> init() async {
   //FEED:
   sl.registerLazySingleton<PostRepository>(
       () => PostRepositoryImpl(mockFeedDatasource: sl<MockFeedDatasource>()));
+  sl.registerLazySingleton<UserRepository>(
+      () => UserRepositoryImpl(mockFeedDatasource: sl<MockFeedDatasource>()));
 
   //*USECASES
   //AUTH:
@@ -52,6 +58,8 @@ Future<void> init() async {
   //FEED:
   sl.registerLazySingleton<GetPosts>(
       () => GetPosts(postRepository: sl<PostRepository>()));
+  sl.registerLazySingleton<GetUsers>(
+      () => GetUsers(userRepository: sl<UserRepository>()));
 
   //*BLOCS / CUBITS
 
@@ -69,6 +77,8 @@ Future<void> init() async {
 
   //FEED
   sl.registerFactory<FeedBloc>(() => FeedBloc(getPostsUsecase: sl<GetPosts>()));
+  sl.registerFactory<DiscoverBloc>(
+      () => DiscoverBloc(getUsers: sl<GetUsers>()));
 
   //*MAPPERS
   sl.registerLazySingleton<UserMapper>(() => UserMapper());

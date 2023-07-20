@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_social_clean/src/features/feed/presentation/blocs/discover/discover_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/auth/auth_bloc.dart';
@@ -36,7 +37,12 @@ class AppRouter {
       GoRoute(
         path: "/discover",
         name: "discover",
-        builder: (context, state) => const DiscoverScreen(),
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) => sl<DiscoverBloc>()..add(DiscoverGetUsers()),
+            child: const DiscoverScreen(),
+          );
+        },
         routes: [
           //SUB LEVEL ROUTES: /discover/:userId
           GoRoute(
