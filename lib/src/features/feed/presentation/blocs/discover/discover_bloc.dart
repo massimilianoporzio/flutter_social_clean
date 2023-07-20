@@ -22,7 +22,7 @@ class DiscoverBloc extends Bloc<DiscoverEvent, DiscoverState> with BlocLoggy {
       DiscoverEvent event, Emitter<DiscoverState> emit) async {
     loggy.debug("START getting users");
     emit(DiscoverLoading());
-    await Future.delayed(const Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 100));
     List<User> users = await _getUsersUsecase(NoParams());
     emit(DiscoverLoaded(users: users));
   }
