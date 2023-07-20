@@ -24,14 +24,13 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
   void initState() {
     controller = VideoPlayerController.asset(widget.assetPath)
       ..initialize().then((_) {
-        controller.setVolume(0);
-        controller.play();
-        controller.setLooping(true); //metto in loop
         setState(() {
           //forzo il build
         });
       });
-
+    controller.setVolume(0);
+    controller.play();
+    controller.setLooping(true); //metto in loop
     super.initState();
   }
 
@@ -49,7 +48,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
       return const SizedBox.shrink();
     } else {
       setState(() {
-        controller.play();
+        // controller.play();
       });
       return GestureDetector(
         onTap: () {
