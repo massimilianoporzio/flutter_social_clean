@@ -11,6 +11,7 @@ import 'package:flutter_social_clean/src/features/auth/presentation/pages/login_
 import 'package:flutter_social_clean/src/features/auth/presentation/pages/signup_screen.dart';
 import 'package:flutter_social_clean/src/features/feed/presentation/pages/discover_screen.dart';
 
+import '../features/content/presentation/pages/add_content_screen.dart';
 import '../features/feed/presentation/blocs/feed/feed_bloc.dart';
 import '../features/feed/presentation/pages/feed_screen.dart';
 import '../services/service_locator.dart';
@@ -66,38 +67,13 @@ class AppRouter {
           ),
         ],
       ),
-    ], //TOP LEVEL
-    // redirect: (context, state) {
-    //   final loginLocation = state.namedLocation('login');
-    //   final signupLocation = state.namedLocation('signup');
-
-    //   //è loggato?
-    //   final bool isLoggedIn =
-    //       authBloc.state.status == AuthStatus.authenticated;
-    //   //è nella pagina di login?
-    //   final isLogginIn = state.matchedLocation == loginLocation;
-    //   final isSigninUp = state.matchedLocation == signupLocation;
-    //   final isSignedUp = authBloc.state.status == AuthStatus.signedUp;
-    //   //se non è loggato e non sta faecndo né login né signup lo mando a login
-    //   if (!isLoggedIn && !isLogginIn && !isSigninUp) {
-    //     return '/login';
-    //   }
-    //   //se stava facendo login ed è autenticato mando a feed
-    //   if (isLoggedIn && isLogginIn) {
-    //     return '/';
-    //   }
-    //   //se stava facendo signup e mi loggo direttamente mando a feed
-    //   if (isLoggedIn && isSigninUp) {
-    //     return '/';
-    //   }
-    //   if (isSignedUp) {
-    //     return '/login';
-    //   }
-
-    //   return null; //caso di default non fa redirection
-    // },
-    // refreshListenable:
-    //     GoRouterRefreshStream(authBloc.stream) //ASCOLTA lo stream di authBloc
+      GoRoute(
+        path: '/add-content',
+        name: 'add_content',
+        builder: (context, state) => const AddContentScreen(),
+      ),
+    ],
+    //TOP LEVEL
   );
 }
 
