@@ -8,6 +8,7 @@ import 'package:flutter_social_clean/src/features/auth/domain/usecases/logout_us
 import 'package:flutter_social_clean/src/features/auth/domain/usecases/signup_user.dart';
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/signup/signup_cubit.dart';
+import 'package:flutter_social_clean/src/features/content/presentation/blocs/add_content/add_content_cubit.dart';
 import 'package:flutter_social_clean/src/features/feed/data/datasources/local_feed_datasource.dart';
 import 'package:flutter_social_clean/src/features/feed/data/datasources/mock_feed_datasource.dart';
 import 'package:flutter_social_clean/src/features/feed/data/repositories/post_repository_impl.dart';
@@ -86,6 +87,9 @@ Future<void> init() async {
   sl.registerFactory<FeedBloc>(() => FeedBloc(getPostsUsecase: sl<GetPosts>()));
   sl.registerFactory<DiscoverBloc>(
       () => DiscoverBloc(getUsers: sl<GetUsers>()));
+
+  //CONTENT
+  sl.registerFactory<AddContentCubit>(() => AddContentCubit());
 
   //*MAPPERS
   sl.registerLazySingleton<UserMapper>(() => UserMapper());

@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_social_clean/src/features/content/presentation/blocs/add_content/add_content_cubit.dart';
 import 'package:flutter_social_clean/src/features/feed/presentation/blocs/discover/discover_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -70,7 +71,10 @@ class AppRouter {
       GoRoute(
         path: '/add-content',
         name: 'add_content',
-        builder: (context, state) => const AddContentScreen(),
+        builder: (context, state) => BlocProvider<AddContentCubit>(
+          create: (context) => sl<AddContentCubit>(),
+          child: const AddContentScreen(),
+        ),
       ),
     ],
     //TOP LEVEL
