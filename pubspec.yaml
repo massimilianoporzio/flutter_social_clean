@@ -41,7 +41,7 @@ dependencies:
   go_router: ^8.0.3
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  image_picker: ^0.8.6
+  image_picker: ^1.0.1
   intl: ^0.18.0
   loggy: ^2.0.3
   path_provider: ^2.0.15

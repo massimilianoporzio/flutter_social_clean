@@ -12,6 +12,7 @@ import 'package:flutter_social_clean/src/features/auth/presentation/pages/login_
 import 'package:flutter_social_clean/src/features/auth/presentation/pages/signup_screen.dart';
 import 'package:flutter_social_clean/src/features/feed/presentation/pages/discover_screen.dart';
 
+import '../features/auth/domain/entities/auth_status.dart';
 import '../features/content/presentation/pages/add_content_screen.dart';
 import '../features/feed/presentation/blocs/feed/feed_bloc.dart';
 import '../features/feed/presentation/pages/feed_screen.dart';
@@ -23,62 +24,93 @@ class AppRouter {
     this.authBloc,
   );
   late final GoRouter router = GoRouter(
-    routes: <GoRoute>[
-      //TOP LEVEL: EVERY route HAS ITS OWN NAVIGATON STACK
-      GoRoute(
-        path: "/", //pagina principale
-        name: "feed",
-        // builder: (context, state) => const FeedScreen(),
-        builder: (context, state) => BlocProvider(
-          create: (context) => sl<FeedBloc>()
-            ..add(
-                FeedGetPosts()), //passo il bloc e agg evento per caricare i post
-          child: const FeedScreen(),
-        ),
-      ),
-      GoRoute(
-        path: "/discover",
-        name: "discover",
-        builder: (context, state) {
-          return BlocProvider(
-            create: (context) => sl<DiscoverBloc>()..add(DiscoverGetUsers()),
-            child: const DiscoverScreen(),
-          );
-        },
-        routes: [
-          //SUB LEVEL ROUTES: /discover/:userId
-          GoRoute(
-            name: "user",
-            path: ':userId',
-            //TODO: change to user screen
-            builder: (context, state) => Container(),
+      routes: <GoRoute>[
+        //TOP LEVEL: EVERY route HAS ITS OWN NAVIGATON STACK
+        GoRoute(
+          path: "/", //pagina principale
+          name: "feed",
+          // builder: (context, state) => const FeedScreen(),
+          builder: (context, state) => BlocProvider(
+            create: (context) => sl<FeedBloc>()
+              ..add(
+                  FeedGetPosts()), //passo il bloc e agg evento per caricare i post
+            child: const FeedScreen(),
           ),
-        ],
-      ),
-      GoRoute(
-        path: "/login",
-        name: "login",
-        builder: (context, state) => const LoginScreen(),
-        routes: [
-          //SUB LEVEL ROUTES: /login/signup
-          GoRoute(
-            name: "signup",
-            path: 'signup',
-            builder: (context, state) => const SignupScreen(),
-          ),
-        ],
-      ),
-      GoRoute(
-        path: '/add-content',
-        name: 'add_content',
-        builder: (context, state) => BlocProvider<AddContentCubit>(
-          create: (context) => sl<AddContentCubit>(),
-          child: const AddContentScreen(),
         ),
-      ),
-    ],
-    //TOP LEVEL
-  );
+        GoRoute(
+          path: "/discover",
+          name: "discover",
+          builder: (context, state) {
+            return BlocProvider(
+              create: (context) => sl<DiscoverBloc>()..add(DiscoverGetUsers()),
+              child: const DiscoverScreen(),
+            );
+          },
+          routes: [
+            //SUB LEVEL ROUTES: /discover/:userId
+            GoRoute(
+              name: "user",
+              path: ':userId',
+              //TODO: change to user screen
+              builder: (context, state) => Container(),
+            ),
+          ],
+        ),
+        GoRoute(
+          path: "/login",
+          name: "login",
+          builder: (context, state) => const LoginScreen(),
+          routes: [
+            //SUB LEVEL ROUTES: /login/signup
+            GoRoute(
+              name: "signup",
+              path: 'signup',
+              builder: (context, state) => const SignupScreen(),
+            ),
+          ],
+        ),
+        GoRoute(
+          path: '/add-content',
+          name: 'add_content',
+          builder: (context, state) => BlocProvider<AddContentCubit>(
+            create: (context) => sl<AddContentCubit>(),
+            child: const AddContentScreen(),
+          ),
+        ),
+      ],
+      //TOP LEVEL
+      // redirect: (context, state) {
+      //   final loginLocation = state.namedLocation('login');
+      //   final signupLocation = state.namedLocation('signup');
+
+      //   //è loggato?
+      //   final bool isLoggedIn =
+      //       authBloc.state.status == AuthStatus.authenticated;
+      //   //è nella pagina di login?
+      //   final isLogginIn = state.matchedLocation == loginLocation;
+      //   final isSigninUp = state.matchedLocation == signupLocation;
+      //   final isSignedUp = authBloc.state.status == AuthStatus.signedUp;
+      //   //se non è loggato e non sta faecndo né login né signup lo mando a login
+      //   if (!isLoggedIn && !isLogginIn && !isSigninUp) {
+      //     return '/login';
+      //   }
+      //   //se stava facendo login ed è autenticato mando a feed
+      //   if (isLoggedIn && isLogginIn) {
+      //     return '/';
+      //   }
+      //   //se stava facendo signup e mi loggo direttamente mando a feed
+      //   if (isLoggedIn && isSigninUp) {
+      //     return '/';
+      //   }
+      //   if (isSignedUp) {
+      //     return '/login';
+      //   }
+
+      //   return null; //caso di default non fa redirection
+      // },
+      refreshListenable:
+          GoRouterRefreshStream(authBloc.stream) //ASCOLTA lo stream di authBloc
+      );
 }
 
 /// Converts a [Stream] into a [Listenable]

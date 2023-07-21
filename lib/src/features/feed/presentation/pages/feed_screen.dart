@@ -21,7 +21,7 @@ class FeedScreen extends StatelessWidget with UiLoggy {
             );
           }
           if (state is FeedLoaded) {
-            // loggy.debug(state.posts);
+            loggy.debug(state.posts);
 
             return SingleChildScrollView(
               child: ListView(
