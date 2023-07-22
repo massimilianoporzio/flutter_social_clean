@@ -8,6 +8,7 @@ import 'package:flutter_social_clean/src/features/auth/domain/usecases/logout_us
 import 'package:flutter_social_clean/src/features/auth/domain/usecases/signup_user.dart';
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/signup/signup_cubit.dart';
+import 'package:flutter_social_clean/src/features/content/domain/usecases/create_post.dart';
 import 'package:flutter_social_clean/src/features/content/presentation/blocs/add_content/add_content_cubit.dart';
 import 'package:flutter_social_clean/src/features/feed/data/datasources/local_feed_datasource.dart';
 import 'package:flutter_social_clean/src/features/feed/data/datasources/mock_feed_datasource.dart';
@@ -69,6 +70,10 @@ Future<void> init() async {
   sl.registerLazySingleton<GetUsers>(
       () => GetUsers(userRepository: sl<UserRepository>()));
 
+  //CONTENT
+  sl.registerLazySingleton<CreatePost>(
+      () => CreatePost(postRepository: sl<PostRepository>()));
+
   //*BLOCS / CUBITS
 
   //Auth SINGLETON PARLA A TUTTI GLI ALTRI BLOC E RICEVE EVENTI DA LORO
@@ -89,7 +94,8 @@ Future<void> init() async {
       () => DiscoverBloc(getUsers: sl<GetUsers>()));
 
   //CONTENT
-  sl.registerFactory<AddContentCubit>(() => AddContentCubit());
+  sl.registerFactory<AddContentCubit>(
+      () => AddContentCubit(createPostUsecase: sl<CreatePost>()));
 
   //*MAPPERS
   sl.registerLazySingleton<UserMapper>(() => UserMapper());

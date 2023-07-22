@@ -33,4 +33,9 @@ class PostRepositoryImpl with RepositoryLoggy implements PostRepository {
   Future<List<Post>> getPostsByUser(String userId) {
     return mockFeedDatasource.getPostsByUser(userId);
   }
+
+  @override
+  Future<void> createPost(Post post) {
+    return localFeedDatasource.addPost(post); //SALVIAMO IN LOCALE
+  }
 }
