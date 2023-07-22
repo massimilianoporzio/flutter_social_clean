@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_social_clean/src/shared/presentation/widgets/widgets.dart';
+import 'package:loggy/loggy.dart';
 import 'package:video_player/video_player.dart';
 
 class CustomVideoPlayer extends StatefulWidget {
@@ -19,15 +20,22 @@ class CustomVideoPlayer extends StatefulWidget {
   State<CustomVideoPlayer> createState() => _CustomVideoPlayerState();
 }
 
-class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
+class _CustomVideoPlayerState extends State<CustomVideoPlayer> with UiLoggy {
   late VideoPlayerController controller;
 
   @override
   void initState() {
     if (widget.assetPath.startsWith("assets")) {
-      controller = VideoPlayerController.asset(widget.assetPath);
+      controller = VideoPlayerController.asset(
+        widget.assetPath,
+        videoPlayerOptions: VideoPlayerOptions(mixWithOthers: false),
+      );
     } else {
-      controller = VideoPlayerController.file(File(widget.assetPath));
+      controller = VideoPlayerController.file(
+        File(widget.assetPath),
+        videoPlayerOptions:
+            VideoPlayerOptions(mixWithOthers: false), //TRUE MULTIPLI PLAY
+      );
     }
     controller.initialize().then((_) {
       setState(() {
@@ -36,6 +44,8 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
     });
     controller.setVolume(0);
     controller.play();
+
+    loggy.debug("PLAYING ${controller.dataSource}");
     controller.setLooping(true); //metto in loop
     super.initState();
   }
@@ -53,13 +63,14 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
       //video non pronto
       return const SizedBox.shrink();
     } else {
-      setState(() {
-        // controller.play();
-      });
+      // setState(() {
+      //   // controller.play();
+      // });
       return GestureDetector(
         onTap: () {
           setState(() {
             if (controller.value.isPlaying) {
+              loggy.debug("PAUSING");
               controller.pause();
             } else {
               controller.play();

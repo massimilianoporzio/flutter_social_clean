@@ -46,7 +46,8 @@ class CustomNavBar extends StatelessWidget {
               iconSize: 30,
               onPressed: () {
                 //faccio emettere evento di logout
-                context.read<AuthBloc>().add(AuthLogoutUser());
+                // context.read<AuthBloc>().add(AuthLogoutUser());
+                context.goNamed('manage_content');
               },
               icon: const Icon(Icons.person),
             ),
