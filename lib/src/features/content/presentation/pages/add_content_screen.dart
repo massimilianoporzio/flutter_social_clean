@@ -67,10 +67,10 @@ class AddContentScreen extends StatelessWidget with UiLoggy {
                 assetPath: state.video!.path,
               ),
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
                 child: Column(
                   children: [
-                    Spacer(),
+                    const Spacer(),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
