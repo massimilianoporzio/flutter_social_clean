@@ -14,6 +14,7 @@ class AddContentScreen extends StatelessWidget with UiLoggy {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Add Content'),
@@ -53,7 +54,7 @@ class AddContentScreen extends StatelessWidget with UiLoggy {
                   //ASPETTO L'UPLOAD DEL VIDEO POI CHOAMO IL CUBIT A DIRE CHE è CAMBIATO
                   await _handleVideo().then((video) {
                     if (video != null) {
-                      context.read<AddContentCubit>().videoChanged(video!);
+                      context.read<AddContentCubit>().videoChanged(video);
                     }
                   });
                 },
@@ -114,25 +115,87 @@ class AddContentScreen extends StatelessWidget with UiLoggy {
 
   Future<dynamic> _addCaption(BuildContext context) async {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (newContext) {
-        return Container(
-          color: Colors.white.withAlpha(175),
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Add you caption',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .copyWith(fontWeight: FontWeight.bold),
-                )
-              ],
-            ),
+        return Padding(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: Wrap(
+            children: [
+              Container(
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Add you caption',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: TextFormField(
+                            minLines: 3,
+                            maxLines: 3,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(color: Colors.black),
+                            onChanged: (value) {
+                              context
+                                  .read<AddContentCubit>()
+                                  .captionChanged(value);
+                            },
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              filled: true,
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ))
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          minimumSize: const Size.fromHeight(56),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        onPressed: () {
+                          context.read<AddContentCubit>().submit();
+                        },
+                        child: Text(
+                          'Share',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
           ),
         );
       },
