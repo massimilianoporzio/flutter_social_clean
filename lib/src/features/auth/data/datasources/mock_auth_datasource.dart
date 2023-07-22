@@ -129,7 +129,7 @@ class MockAuthDatasourceImpl implements MockAuthDatasource {
     ),
     const User(
       id: 'user_3',
-      username: Username.dirty('John'),
+      username: Username.dirty('Massi'),
       imagePath: 'assets/images/image_3.jpg',
     ),
   ];

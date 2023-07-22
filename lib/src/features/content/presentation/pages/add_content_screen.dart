@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_social_clean/src/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:flutter_social_clean/src/features/content/presentation/blocs/add_content/add_content_cubit.dart';
 import 'package:flutter_social_clean/src/shared/presentation/widgets/custom_video_player.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loggy/loggy.dart';
 import 'package:path_provider/path_provider.dart';
@@ -17,6 +19,11 @@ class AddContentScreen extends StatelessWidget with UiLoggy {
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: BackButton(
+          onPressed: () {
+            context.goNamed('feed');
+          },
+        ),
         title: const Text('Add Content'),
         backgroundColor: Colors.black,
         actions: [
@@ -39,7 +46,10 @@ class AddContentScreen extends StatelessWidget with UiLoggy {
       body: BlocConsumer<AddContentCubit, AddContentState>(
         buildWhen: (previous, current) => previous.video != current.video,
         listener: (context, state) {
-          // TODO: implement listener
+          //*ASCOLTO LO STATO SE è SUCCESS MANDO A FEED
+          if (state.status == AddContentStatus.success) {
+            context.goNamed('feed');
+          }
         },
         builder: (context, state) {
           if (state.video == null) {
@@ -184,7 +194,9 @@ class AddContentScreen extends StatelessWidget with UiLoggy {
                           ),
                         ),
                         onPressed: () {
-                          context.read<AddContentCubit>().submit();
+                          context
+                              .read<AddContentCubit>()
+                              .submit(context.read<AuthBloc>().state.user);
                         },
                         child: Text(
                           'Share',

@@ -79,35 +79,35 @@ class AppRouter {
         ),
       ],
       //TOP LEVEL
-      // redirect: (context, state) {
-      //   final loginLocation = state.namedLocation('login');
-      //   final signupLocation = state.namedLocation('signup');
+      redirect: (context, state) {
+        final loginLocation = state.namedLocation('login');
+        final signupLocation = state.namedLocation('signup');
 
-      //   //è loggato?
-      //   final bool isLoggedIn =
-      //       authBloc.state.status == AuthStatus.authenticated;
-      //   //è nella pagina di login?
-      //   final isLogginIn = state.matchedLocation == loginLocation;
-      //   final isSigninUp = state.matchedLocation == signupLocation;
-      //   final isSignedUp = authBloc.state.status == AuthStatus.signedUp;
-      //   //se non è loggato e non sta faecndo né login né signup lo mando a login
-      //   if (!isLoggedIn && !isLogginIn && !isSigninUp) {
-      //     return '/login';
-      //   }
-      //   //se stava facendo login ed è autenticato mando a feed
-      //   if (isLoggedIn && isLogginIn) {
-      //     return '/';
-      //   }
-      //   //se stava facendo signup e mi loggo direttamente mando a feed
-      //   if (isLoggedIn && isSigninUp) {
-      //     return '/';
-      //   }
-      //   if (isSignedUp) {
-      //     return '/login';
-      //   }
+        //è loggato?
+        final bool isLoggedIn =
+            authBloc.state.status == AuthStatus.authenticated;
+        //è nella pagina di login?
+        final isLogginIn = state.matchedLocation == loginLocation;
+        final isSigninUp = state.matchedLocation == signupLocation;
+        final isSignedUp = authBloc.state.status == AuthStatus.signedUp;
+        //se non è loggato e non sta faecndo né login né signup lo mando a login
+        if (!isLoggedIn && !isLogginIn && !isSigninUp) {
+          return '/login';
+        }
+        //se stava facendo login ed è autenticato mando a feed
+        if (isLoggedIn && isLogginIn) {
+          return '/';
+        }
+        //se stava facendo signup e mi loggo direttamente mando a feed
+        if (isLoggedIn && isSigninUp) {
+          return '/';
+        }
+        if (isSignedUp) {
+          return '/login';
+        }
 
-      //   return null; //caso di default non fa redirection
-      // },
+        return null; //caso di default non fa redirection
+      },
       refreshListenable:
           GoRouterRefreshStream(authBloc.stream) //ASCOLTA lo stream di authBloc
       );

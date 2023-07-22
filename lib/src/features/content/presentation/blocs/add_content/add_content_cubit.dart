@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_social_clean/src/features/content/domain/usecases/create_post.dart';
 import 'package:flutter_social_clean/src/logs/bloc_logger.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../../shared/domain/entities/post.dart';
 import '../../../../../shared/domain/entities/user.dart';
@@ -30,13 +31,13 @@ class AddContentCubit extends Cubit<AddContentState> with BlocLoggy {
   }
 
   //get info for creating post, create it and send it to database
-  void submit() {
+  void submit(User user) {
     loggy.debug("SUBMITTING: $state");
     emit(state.copyWith(status: AddContentStatus.loading));
     try {
       final Post post = Post(
-        id: 'post_000', //hard coded for now
-        user: User.empty, //TODO put the current logged in user
+        id: const Uuid().v4(),
+        user: user,
         assetPath: state.video!.path,
         caption: state.caption,
       );
