@@ -36,10 +36,12 @@ class LoggedInUser extends User with EquatableMixin {
     int? followings,
   }) {
     return LoggedInUser(
-      email: email ?? this.email,
-      id: id ?? '',
-      username: username ?? this.username,
-    );
+        email: email ?? this.email,
+        id: id ?? '',
+        username: username ?? this.username,
+        imagePath: imagePath ?? this.imagePath,
+        followers: followers ?? this.followers,
+        followings: followings ?? this.followings);
   }
 }
 

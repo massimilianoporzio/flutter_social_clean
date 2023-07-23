@@ -30,8 +30,17 @@ class PostRepositoryImpl with RepositoryLoggy implements PostRepository {
   }
 
   @override
-  Future<List<Post>> getPostsByUser(String userId) {
-    return mockFeedDatasource.getPostsByUser(userId);
+  Future<List<Post>> getPostsByUser(String userId) async {
+    if ((await localFeedDatasource.getPostsByUser(userId)).isEmpty) {
+      List<Post> posts = await mockFeedDatasource.getPostsByUser(userId);
+      for (final post in posts) {
+        localFeedDatasource.addPost(post); //li aggiungo in cache
+      }
+      return posts;
+    } else {
+      loggy.debug("GET POSTS By USER from CACHE (Hive)");
+      return localFeedDatasource.getPostsByUser(userId);
+    }
   }
 
   @override

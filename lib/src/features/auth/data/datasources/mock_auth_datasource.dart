@@ -39,6 +39,9 @@ class MockAuthDatasourceImpl implements MockAuthDatasource {
     String? id,
     Username? username,
     Email? email,
+    int? followers,
+    int? followings,
+    String? imagePath,
   }) {
     LoggedInUser loggedInUser =
         _cache.read(key: userCacheKey) ?? LoggedInUser.empty;
@@ -49,6 +52,9 @@ class MockAuthDatasourceImpl implements MockAuthDatasource {
         id: id,
         username: username,
         email: email,
+        followers: followers,
+        followings: followings,
+        imagePath: imagePath,
       ),
     );
   }
@@ -73,7 +79,13 @@ class MockAuthDatasourceImpl implements MockAuthDatasource {
         //cerco se sto facendo login con user che esiste
         for (final user in _allUsers) {
           if (user.username.value == username.value) {
-            _updateLoggedInUser(id: user.id, username: user.username);
+            _updateLoggedInUser(
+              id: user.id,
+              username: user.username,
+              followers: user.followers,
+              followings: user.followings,
+              imagePath: user.imagePath,
+            );
             _controller.add(AuthStatus
                 .authenticated); //mando in stream che sono autenticato
             return; //esco dalla callback

@@ -1,0 +1,18 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+part of 'manage_content_bloc.dart';
+
+abstract class ManageContentEvent extends Equatable {
+  const ManageContentEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
+class ManageContentGetPostsByUser extends ManageContentEvent {
+  final String userId;
+  const ManageContentGetPostsByUser({
+    required this.userId,
+  });
+  @override
+  List<Object> get props => [userId];
+}

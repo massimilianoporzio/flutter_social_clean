@@ -10,6 +10,8 @@ abstract class LocalFeedDatasource {
   Future<void> addPost(Post post);
   //delete all posts from local storage
   Future<void> deleteAllPosts();
+  //get only the posts of current logged in user
+  Future<List<Post>> getPostsByUser(String userId);
 }
 
 class LocalFeedDatasourceImpl implements LocalFeedDatasource {
@@ -37,5 +39,15 @@ class LocalFeedDatasourceImpl implements LocalFeedDatasource {
 
   Future<Box<PostModel>> _openBox() async {
     return Hive.openBox(boxName);
+  }
+
+  @override
+  Future<List<Post>> getPostsByUser(String userId) async {
+    Box<PostModel> box = await _openBox();
+    return box.values
+        .where((element) => element.userModel.id == userId)
+        .toList()
+        .map((post) => post.toEntity())
+        .toList();
   }
 }

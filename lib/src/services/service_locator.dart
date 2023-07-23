@@ -17,6 +17,7 @@ import 'package:flutter_social_clean/src/features/feed/data/repositories/user_re
 import 'package:flutter_social_clean/src/features/feed/domain/repositories/post_repository.dart';
 import 'package:flutter_social_clean/src/features/feed/domain/repositories/user_repository.dart';
 import 'package:flutter_social_clean/src/features/feed/domain/usecases/get_posts.dart';
+import 'package:flutter_social_clean/src/features/feed/domain/usecases/get_posts_by_user.dart';
 import 'package:flutter_social_clean/src/features/feed/domain/usecases/get_users.dart';
 import 'package:flutter_social_clean/src/features/feed/presentation/blocs/discover/discover_bloc.dart';
 import 'package:flutter_social_clean/src/features/feed/presentation/blocs/feed/feed_bloc.dart';
@@ -24,6 +25,7 @@ import 'package:flutter_social_clean/src/shared/data/mappers/user_mapper.dart';
 import 'package:get_it/get_it.dart';
 
 import '../features/auth/presentation/blocs/login/login_cubit.dart';
+import '../features/content/presentation/blocs/manage_content/manage_content_bloc.dart';
 import '../shared/data/mappers/post_mapper.dart';
 
 final sl = GetIt.instance;
@@ -69,6 +71,8 @@ Future<void> init() async {
       () => GetPosts(postRepository: sl<PostRepository>()));
   sl.registerLazySingleton<GetUsers>(
       () => GetUsers(userRepository: sl<UserRepository>()));
+  sl.registerLazySingleton<GetPostsByUser>(
+      () => GetPostsByUser(postRepository: sl<PostRepository>()));
 
   //CONTENT
   sl.registerLazySingleton<CreatePost>(
@@ -96,6 +100,8 @@ Future<void> init() async {
   //CONTENT
   sl.registerFactory<AddContentCubit>(
       () => AddContentCubit(createPostUsecase: sl<CreatePost>()));
+  sl.registerFactory<ManageContentBloc>(
+      () => ManageContentBloc(getPostsByUser: sl<GetPostsByUser>()));
 
   //*MAPPERS
   sl.registerLazySingleton<UserMapper>(() => UserMapper());

@@ -22,12 +22,15 @@ class CustomUserInformation extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildUserInfo(context, "Followers", "${user.followers}"),
-            _buildUserInfo(context, "Followings", "${user.followings}"),
-          ],
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 75),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildUserInfo(context, "Followers", "${user.followers}"),
+              _buildUserInfo(context, "Followings", "${user.followings}"),
+            ],
+          ),
         )
       ],
     );

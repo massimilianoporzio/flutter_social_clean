@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_social_clean/src/features/content/presentation/blocs/add_content/add_content_cubit.dart';
+import 'package:flutter_social_clean/src/features/content/presentation/blocs/manage_content/manage_content_bloc.dart';
 import 'package:flutter_social_clean/src/features/content/presentation/pages/ManageContentScreen.dart';
 import 'package:flutter_social_clean/src/features/feed/presentation/blocs/discover/discover_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -28,7 +29,7 @@ class AppRouter {
       routes: <GoRoute>[
         //TOP LEVEL: EVERY route HAS ITS OWN NAVIGATON STACK
         GoRoute(
-          path: "/feed", //pagina principale
+          path: "/", //pagina principale
           name: "feed",
           // builder: (context, state) => const FeedScreen(),
           builder: (context, state) => BlocProvider(
@@ -79,44 +80,46 @@ class AppRouter {
           ),
         ),
         GoRoute(
-          path: '/',
+          path: '/manage-content',
           name: 'manage_content',
-          builder: (context, state) => BlocProvider<AddContentCubit>(
-            create: (context) => sl<AddContentCubit>(),
+          builder: (context, state) => BlocProvider<ManageContentBloc>(
+            create: (context) => sl<ManageContentBloc>()
+              ..add(
+                  ManageContentGetPostsByUser(userId: authBloc.state.user.id)),
             child: const ManageContentScreen(),
           ),
         ),
       ],
       //TOP LEVEL
-      // redirect: (context, state) {
-      //   final loginLocation = state.namedLocation('login');
-      //   final signupLocation = state.namedLocation('signup');
+      redirect: (context, state) {
+        final loginLocation = state.namedLocation('login');
+        final signupLocation = state.namedLocation('signup');
 
-      //   //è loggato?
-      //   final bool isLoggedIn =
-      //       authBloc.state.status == AuthStatus.authenticated;
-      //   //è nella pagina di login?
-      //   final isLogginIn = state.matchedLocation == loginLocation;
-      //   final isSigninUp = state.matchedLocation == signupLocation;
-      //   final isSignedUp = authBloc.state.status == AuthStatus.signedUp;
-      //   //se non è loggato e non sta faecndo né login né signup lo mando a login
-      //   if (!isLoggedIn && !isLogginIn && !isSigninUp) {
-      //     return '/login';
-      //   }
-      //   //se stava facendo login ed è autenticato mando a feed
-      //   if (isLoggedIn && isLogginIn) {
-      //     return '/';
-      //   }
-      //   //se stava facendo signup e mi loggo direttamente mando a feed
-      //   if (isLoggedIn && isSigninUp) {
-      //     return '/';
-      //   }
-      //   if (isSignedUp) {
-      //     return '/login';
-      //   }
+        //è loggato?
+        final bool isLoggedIn =
+            authBloc.state.status == AuthStatus.authenticated;
+        //è nella pagina di login?
+        final isLogginIn = state.matchedLocation == loginLocation;
+        final isSigninUp = state.matchedLocation == signupLocation;
+        final isSignedUp = authBloc.state.status == AuthStatus.signedUp;
+        //se non è loggato e non sta faecndo né login né signup lo mando a login
+        if (!isLoggedIn && !isLogginIn && !isSigninUp) {
+          return '/login';
+        }
+        //se stava facendo login ed è autenticato mando a feed
+        if (isLoggedIn && isLogginIn) {
+          return '/';
+        }
+        //se stava facendo signup e mi loggo direttamente mando a feed
+        if (isLoggedIn && isSigninUp) {
+          return '/';
+        }
+        if (isSignedUp) {
+          return '/login';
+        }
 
-      //   return null; //caso di default non fa redirection
-      // },
+        return null; //caso di default non fa redirection
+      },
       refreshListenable:
           GoRouterRefreshStream(authBloc.stream) //ASCOLTA lo stream di authBloc
       );
