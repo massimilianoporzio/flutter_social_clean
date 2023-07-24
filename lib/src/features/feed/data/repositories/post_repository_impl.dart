@@ -47,4 +47,10 @@ class PostRepositoryImpl with RepositoryLoggy implements PostRepository {
   Future<void> createPost(Post post) {
     return localFeedDatasource.addPost(post); //SALVIAMO IN LOCALE
   }
+
+  @override
+  Future<void> deletePostById(String postId) {
+    //TODO: delete from local and/or from remote datasource
+    return localFeedDatasource.deletePostById(postId);
+  }
 }

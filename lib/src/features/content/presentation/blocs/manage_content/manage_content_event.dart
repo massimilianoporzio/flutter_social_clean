@@ -16,3 +16,13 @@ class ManageContentGetPostsByUser extends ManageContentEvent {
   @override
   List<Object> get props => [userId];
 }
+
+class ManageContentDeletePost extends ManageContentEvent {
+  final Post post;
+  const ManageContentDeletePost({
+    required this.post,
+  });
+
+  @override
+  List<Object> get props => [post];
+}

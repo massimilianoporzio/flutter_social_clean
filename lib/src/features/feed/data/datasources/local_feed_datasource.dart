@@ -12,6 +12,8 @@ abstract class LocalFeedDatasource {
   Future<void> deleteAllPosts();
   //get only the posts of current logged in user
   Future<List<Post>> getPostsByUser(String userId);
+  //delete POst by Id
+  Future<void> deletePostById(String postId);
 }
 
 class LocalFeedDatasourceImpl implements LocalFeedDatasource {
@@ -27,6 +29,13 @@ class LocalFeedDatasourceImpl implements LocalFeedDatasource {
   Future<void> deleteAllPosts() async {
     Box box = await _openBox();
     await box.clear();
+  }
+
+  @override
+  Future<void> deletePostById(String postId) async {
+    Box<PostModel> box = await _openBox();
+    return box.delete(
+        postId); //Hive registra chiave valore e ho usato post.id quando l'ho messo in cache
   }
 
   @override

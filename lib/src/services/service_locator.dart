@@ -16,6 +16,7 @@ import 'package:flutter_social_clean/src/features/feed/data/repositories/post_re
 import 'package:flutter_social_clean/src/features/feed/data/repositories/user_repository_impl.dart';
 import 'package:flutter_social_clean/src/features/feed/domain/repositories/post_repository.dart';
 import 'package:flutter_social_clean/src/features/feed/domain/repositories/user_repository.dart';
+import 'package:flutter_social_clean/src/features/feed/domain/usecases/delete_post.dart';
 import 'package:flutter_social_clean/src/features/feed/domain/usecases/get_posts.dart';
 import 'package:flutter_social_clean/src/features/feed/domain/usecases/get_posts_by_user.dart';
 import 'package:flutter_social_clean/src/features/feed/domain/usecases/get_users.dart';
@@ -77,6 +78,8 @@ Future<void> init() async {
   //CONTENT
   sl.registerLazySingleton<CreatePost>(
       () => CreatePost(postRepository: sl<PostRepository>()));
+  sl.registerLazySingleton<DeletePost>(
+      () => DeletePost(postRepository: sl<PostRepository>()));
 
   //*BLOCS / CUBITS
 
@@ -100,8 +103,10 @@ Future<void> init() async {
   //CONTENT
   sl.registerFactory<AddContentCubit>(
       () => AddContentCubit(createPostUsecase: sl<CreatePost>()));
-  sl.registerFactory<ManageContentBloc>(
-      () => ManageContentBloc(getPostsByUser: sl<GetPostsByUser>()));
+  sl.registerFactory<ManageContentBloc>(() => ManageContentBloc(
+        getPostsByUser: sl<GetPostsByUser>(),
+        deletePost: sl<DeletePost>(),
+      ));
 
   //*MAPPERS
   sl.registerLazySingleton<UserMapper>(() => UserMapper());

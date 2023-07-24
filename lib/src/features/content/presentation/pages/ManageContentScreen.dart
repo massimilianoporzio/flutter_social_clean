@@ -51,8 +51,17 @@ class ManageContentScreen extends StatelessWidget {
                         ),
                         itemCount: state.posts.length,
                         itemBuilder: (context, index) {
-                          return CustomVideoPlayer(
-                              assetPath: state.posts[index].assetPath);
+                          return InkWell(
+                            onDoubleTap: () {
+                              context.read<ManageContentBloc>().add(
+                                  ManageContentDeletePost(
+                                      post: state.posts[index]));
+                            },
+                            child: CustomVideoPlayer(
+                                key:
+                                    UniqueKey(), //se no sballa lista quando faccio delete
+                                assetPath: state.posts[index].assetPath),
+                          );
                         },
                       ),
                       const Center(child: Text('Second Tab')),
