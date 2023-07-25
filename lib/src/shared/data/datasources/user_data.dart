@@ -1,14 +1,14 @@
 List<Map<String, dynamic>> users = [
   {
     'id': 'user_1',
-    'username': 'User #1',
+    'username': 'Massimo',
     'imagePath': 'assets/images/image_1.jpg',
     'followers': 100,
     'followings': 100,
   },
   {
     'id': 'user_2',
-    'username': 'User #2',
+    'username': 'Chiara',
     'imagePath': 'assets/images/image_2.jpg',
     'followers': 200,
     'followings': 200,

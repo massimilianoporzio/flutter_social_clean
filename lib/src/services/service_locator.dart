@@ -8,6 +8,10 @@ import 'package:flutter_social_clean/src/features/auth/domain/usecases/logout_us
 import 'package:flutter_social_clean/src/features/auth/domain/usecases/signup_user.dart';
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:flutter_social_clean/src/features/auth/presentation/blocs/signup/signup_cubit.dart';
+import 'package:flutter_social_clean/src/features/chat/data/datasources/local_chat_datasource.dart';
+import 'package:flutter_social_clean/src/features/chat/data/datasources/mock_chat_datasource.dart';
+import 'package:flutter_social_clean/src/features/chat/data/repositories/chat_repository_impl.dart';
+import 'package:flutter_social_clean/src/features/chat/domain/repositories/chat_repository.dart';
 import 'package:flutter_social_clean/src/features/content/domain/usecases/create_post.dart';
 import 'package:flutter_social_clean/src/features/content/presentation/blocs/add_content/add_content_cubit.dart';
 import 'package:flutter_social_clean/src/features/feed/data/datasources/local_feed_datasource.dart';
@@ -39,6 +43,10 @@ Future<void> init() async {
   sl.registerLazySingleton<MockFeedDatasource>(() => MockFeedDatasourceImpl());
   sl.registerLazySingleton<LocalFeedDatasource>(
       () => LocalFeedDatasourceImpl());
+  //CHAT
+  sl.registerLazySingleton<LocalChatDatasource>(
+      () => LocalChatDatasourceImpl());
+  sl.registerLazySingleton<MockChatDatasource>(() => MockChatDatasourceImpl());
 
   //*REPOSITORIES:
   //AUTH:
@@ -53,6 +61,12 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<UserRepository>(
       () => UserRepositoryImpl(mockFeedDatasource: sl<MockFeedDatasource>()));
+
+  //CHAT:
+  sl.registerLazySingleton<ChatRepository>(() => ChatRepositoryImpl(
+        localChatDatasource: sl<LocalChatDatasource>(),
+        remoteChatDatasource: sl<MockChatDatasource>(),
+      ));
 
   //*USECASES
   //AUTH:

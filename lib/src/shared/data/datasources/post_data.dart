@@ -22,7 +22,7 @@ List<Map<String, dynamic>> posts = [
   },
   {
     'id': 'post_4',
-    'userId': 'user_2',
+    'userId': 'user_1',
     'caption':
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dui dolor, pulvinar ut odio a, facilisis dignissim risus.',
     'assetPath': 'assets/videos/compressed/video_4.mp4',
