@@ -1,13 +1,23 @@
 import 'dart:convert';
 
+import 'package:hive_flutter/adapters.dart';
+
 import '../../domain/entities/message.dart';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+part 'message_model.g.dart';
+
+@HiveType(typeId: 2) //terzo modello
 class MessageModel {
+  @HiveField(0)
   final String chatId; //a quale chat appartiene il messaggio
+  @HiveField(1)
   final String senderId; //id dell'utente che invia
+  @HiveField(2)
   final String recipientId; //id di chi riceve
+  @HiveField(3)
   final String text;
+  @HiveField(4)
   final DateTime createdAt;
   MessageModel({
     required this.chatId,

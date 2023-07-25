@@ -2,14 +2,22 @@
 
 import 'package:flutter_social_clean/src/features/chat/data/models/message_model.dart';
 import 'package:flutter_social_clean/src/shared/data/models/user_model.dart';
+import 'package:hive_flutter/adapters.dart';
 
 import '../../domain/entities/chat.dart';
+part 'chat_model.g.dart';
 
 //GLI INPUT non essendo primitivi sono dei MODELs NON delle entities.
+@HiveType(typeId: 3) //quarto model
 class ChatModel {
+  @HiveField(0)
   final String id; //uuid della chat
-  final UserModel currentUser; //utente corrente
+  @HiveField(1)
+  final UserModel
+      currentUser; //utente corrente //hanno già il loro type adapter
+  @HiveField(2)
   final UserModel otherUser; //altro utente a cui scrivo
+  @HiveField(3)
   final List<MessageModel>? messages; //eventuali messaggi
   ChatModel({
     required this.id,

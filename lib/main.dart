@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_social_clean/src/features/chat/data/models/chat_model.dart';
+import 'package:flutter_social_clean/src/features/chat/data/models/message_model.dart';
 import 'package:flutter_social_clean/src/shared/data/models/post_model.dart';
 import 'package:flutter_social_clean/src/shared/data/models/user_model.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -15,6 +17,8 @@ Future<void> main() async {
   //HIVE REGISTER MY ADAPTERS
   Hive.registerAdapter(UserModelAdapter());
   Hive.registerAdapter(PostModelAdapter());
+  Hive.registerAdapter(MessageModelAdapter());
+  Hive.registerAdapter(ChatModelAdapter());
   //iniziallizza il logger con la stampa a video colorata
   Loggy.initLoggy(
     logPrinter: const PrettyPrinter(),
