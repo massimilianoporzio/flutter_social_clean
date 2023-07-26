@@ -3,6 +3,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_social_clean/src/features/chat/presentation/blocs/chat_list/chat_list_bloc.dart';
+import 'package:flutter_social_clean/src/features/chat/presentation/pages/chat_list_screen.dart';
 import 'package:flutter_social_clean/src/features/content/presentation/blocs/add_content/add_content_cubit.dart';
 import 'package:flutter_social_clean/src/features/content/presentation/blocs/manage_content/manage_content_bloc.dart';
 import 'package:flutter_social_clean/src/features/content/presentation/pages/ManageContentScreen.dart';
@@ -87,6 +89,15 @@ class AppRouter {
               ..add(
                   ManageContentGetPostsByUser(userId: authBloc.state.user.id)),
             child: const ManageContentScreen(),
+          ),
+        ),
+        GoRoute(
+          path: '/chats',
+          name: 'chats',
+          builder: (context, state) => BlocProvider<ChatListBloc>(
+            create: (context) => sl<ChatListBloc>()
+              ..add(ChatGetChats(userId: authBloc.state.user.id)),
+            child: const ChatListScreen(),
           ),
         ),
       ],

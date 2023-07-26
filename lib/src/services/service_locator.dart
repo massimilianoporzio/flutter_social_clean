@@ -12,6 +12,10 @@ import 'package:flutter_social_clean/src/features/chat/data/datasources/local_ch
 import 'package:flutter_social_clean/src/features/chat/data/datasources/mock_chat_datasource.dart';
 import 'package:flutter_social_clean/src/features/chat/data/repositories/chat_repository_impl.dart';
 import 'package:flutter_social_clean/src/features/chat/domain/repositories/chat_repository.dart';
+import 'package:flutter_social_clean/src/features/chat/domain/usecases/get_chat_by_id.dart';
+import 'package:flutter_social_clean/src/features/chat/domain/usecases/get_chats_by_user.dart';
+import 'package:flutter_social_clean/src/features/chat/domain/usecases/update_chat.dart';
+import 'package:flutter_social_clean/src/features/chat/presentation/blocs/chat_list/chat_list_bloc.dart';
 import 'package:flutter_social_clean/src/features/content/domain/usecases/create_post.dart';
 import 'package:flutter_social_clean/src/features/content/presentation/blocs/add_content/add_content_cubit.dart';
 import 'package:flutter_social_clean/src/features/feed/data/datasources/local_feed_datasource.dart';
@@ -95,6 +99,14 @@ Future<void> init() async {
   sl.registerLazySingleton<DeletePost>(
       () => DeletePost(postRepository: sl<PostRepository>()));
 
+  //CHAT
+  sl.registerLazySingleton<GetChatsByUser>(
+      () => GetChatsByUser(chatRepository: sl<ChatRepository>()));
+  sl.registerLazySingleton<GetChatById>(
+      () => GetChatById(chatRepository: sl<ChatRepository>()));
+  sl.registerLazySingleton<UpdateChat>(
+      () => UpdateChat(chatRepository: sl<ChatRepository>()));
+
   //*BLOCS / CUBITS
 
   //Auth SINGLETON PARLA A TUTTI GLI ALTRI BLOC E RICEVE EVENTI DA LORO
@@ -121,6 +133,10 @@ Future<void> init() async {
         getPostsByUser: sl<GetPostsByUser>(),
         deletePost: sl<DeletePost>(),
       ));
+
+  //CHAT
+  sl.registerFactory<ChatListBloc>(
+      () => ChatListBloc(getChatsByUser: sl<GetChatsByUser>()));
 
   //*MAPPERS
   sl.registerLazySingleton<UserMapper>(() => UserMapper());
