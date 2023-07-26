@@ -15,6 +15,7 @@ import 'package:flutter_social_clean/src/features/chat/domain/repositories/chat_
 import 'package:flutter_social_clean/src/features/chat/domain/usecases/get_chat_by_id.dart';
 import 'package:flutter_social_clean/src/features/chat/domain/usecases/get_chats_by_user.dart';
 import 'package:flutter_social_clean/src/features/chat/domain/usecases/update_chat.dart';
+import 'package:flutter_social_clean/src/features/chat/presentation/blocs/chat/chat_bloc.dart';
 import 'package:flutter_social_clean/src/features/chat/presentation/blocs/chat_list/chat_list_bloc.dart';
 import 'package:flutter_social_clean/src/features/content/domain/usecases/create_post.dart';
 import 'package:flutter_social_clean/src/features/content/presentation/blocs/add_content/add_content_cubit.dart';
@@ -137,6 +138,11 @@ Future<void> init() async {
   //CHAT
   sl.registerFactory<ChatListBloc>(
       () => ChatListBloc(getChatsByUser: sl<GetChatsByUser>()));
+
+  sl.registerFactory<ChatBloc>(() => ChatBloc(
+        getChatById: sl<GetChatById>(),
+        updateChat: sl<UpdateChat>(),
+      ));
 
   //*MAPPERS
   sl.registerLazySingleton<UserMapper>(() => UserMapper());
