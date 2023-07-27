@@ -30,7 +30,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> with BlocLoggy {
     Emitter<ChatState> emit,
   ) async {
     loggy.debug("Start getting chat with: _onChatGetChat");
-    Chat? chat = await _getChatById(
+    Chat chat = await _getChatById(
         GetChatByIdParams(chatId: event.chatId, userId: event.userId));
     emit(ChatLoaded(chat: chat));
   }
@@ -42,17 +42,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> with BlocLoggy {
     loggy.debug("Start updating chat with: _onChatUpdateChat");
     if (state is ChatLoaded) {
       final state = this.state as ChatLoaded;
-      if (state.chat != null) {
+
 //state BEFORE updating
-        Message message = Message(
-            chatId: state.chat!.id,
-            senderId: state.chat!.currentUser.id,
-            recipientId: state.chat!.otherUser.id,
-            text: event.text,
-            createdAt: DateTime.now());
-        Chat chat =
-            state.chat!.copyWith(messages: List.from(state.chat!.messages!));
-      }
+      Message message = Message(
+          chatId: state.chat.id,
+          senderId: state.chat.currentUser.id,
+          recipientId: state.chat.otherUser.id,
+          text: event.text,
+          createdAt: DateTime.now());
+      //creo chat NUOVA che ha i vecchi messaggi E il nuovo
+      Chat chat = state.chat
+          .copyWith(messages: List.from(state.chat.messages!)..add(message));
+      //AGGIORNO LA CHAT (creo nuova chat con IL NUOVO MESSAGGIO
+      _updateChat(UpdateChatParams(chat: chat)); //NELLA LOCAL DATASOURCE
     }
   }
 }

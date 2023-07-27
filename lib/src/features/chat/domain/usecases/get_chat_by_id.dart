@@ -9,7 +9,7 @@ class GetChatById implements UseCase<Chat, GetChatByIdParams> {
     required this.chatRepository,
   });
   @override
-  Future<Chat?> call(GetChatByIdParams params) {
+  Future<Chat> call(GetChatByIdParams params) {
     return chatRepository.getChatById(params.userId, params.chatId);
   }
 }

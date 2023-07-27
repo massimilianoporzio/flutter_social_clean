@@ -13,7 +13,7 @@ class ChatRepositoryImpl with RepositoryLoggy implements ChatRepository {
     required this.remoteChatDatasource,
   });
   @override
-  Future<Chat?> getChatById(String userId, String chatId) async {
+  Future<Chat> getChatById(String userId, String chatId) async {
     //TODO: check for updates from remote source;
     //cerco in locale
     Chat? chat = await localChatDatasource.getChatById(chatId);

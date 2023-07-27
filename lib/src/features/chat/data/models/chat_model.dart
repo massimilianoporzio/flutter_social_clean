@@ -44,15 +44,9 @@ class ChatModel {
       id: json['id'] as String,
       currentUser: UserModel.fromJson(jsonCurrentUser),
       otherUser: UserModel.fromJson(jsonOtherUser),
-      messages: json['messages'] !=
-              null //itero sui 'json' dei messaggi e li converto usando la chatId = id da cui parto
-          ? List<MessageModel>.from(
-              (json['messages'] as List).map<MessageModel?>(
-                (x) => MessageModel.fromJson(
-                    x as Map<String, dynamic>, json['id']),
-              ),
-            )
-          : null,
+      messages: (json['messages'] as List).map((message) {
+        return MessageModel.fromJson(message, json['id']);
+      }).toList(),
     );
   }
 
@@ -61,9 +55,8 @@ class ChatModel {
         id: chat.id,
         currentUser: UserModel.fromEntity(chat.currentUser),
         otherUser: UserModel.fromEntity(chat.otherUser),
-        messages: chat.messages != null
-            ? chat.messages!.map((e) => MessageModel.fromEntity(e)).toList()
-            : null);
+        messages:
+            chat.messages!.map((e) => MessageModel.fromEntity(e)).toList());
   }
   //LA UI usa SEMPRE le entities MAI i model
   Chat toEntity() {
@@ -71,8 +64,7 @@ class ChatModel {
       id: id,
       currentUser: currentUser.toEntity(),
       otherUser: otherUser.toEntity(),
-      messages:
-          messages != null ? messages!.map((e) => e.toEntity()).toList() : null,
+      messages: messages!.map((e) => e.toEntity()).toList(),
     );
   }
 

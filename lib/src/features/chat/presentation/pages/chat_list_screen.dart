@@ -54,8 +54,8 @@ class _Chat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Message? lastMessage =
-        chat.messages == null ? null : chat.messages!.reversed.first;
+    Message lastMessage = chat.messages!.reversed
+        .first; //presuppone che NON esista una chat senza messaggi
     return ListTile(
       onTap: () {
         //passo la route con una mappa chiave valore
@@ -75,13 +75,11 @@ class _Chat extends StatelessWidget {
             .copyWith(fontWeight: FontWeight.bold),
       ),
       subtitle: Text(
-        lastMessage == null ? "" : lastMessage.text,
+        lastMessage.text,
         style: Theme.of(context).textTheme.bodySmall,
       ),
       trailing: Text(
-        lastMessage == null
-            ? ""
-            : "${lastMessage.createdAt.hour}:${lastMessage.createdAt.minute}",
+        "${lastMessage.createdAt.hour}:${lastMessage.createdAt.minute}",
         style: Theme.of(context).textTheme.bodySmall,
       ),
     );

@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_social_clean/src/features/chat/presentation/blocs/chat/chat_bloc.dart';
 import 'package:flutter_social_clean/src/features/chat/presentation/blocs/chat_list/chat_list_bloc.dart';
 import 'package:flutter_social_clean/src/features/chat/presentation/pages/chat_list_screen.dart';
 import 'package:flutter_social_clean/src/features/content/presentation/blocs/add_content/add_content_cubit.dart';
@@ -17,6 +18,7 @@ import 'package:flutter_social_clean/src/features/auth/presentation/pages/signup
 import 'package:flutter_social_clean/src/features/feed/presentation/pages/discover_screen.dart';
 
 import '../features/auth/domain/entities/auth_status.dart';
+import '../features/chat/presentation/pages/chat_screen.dart';
 import '../features/content/presentation/pages/add_content_screen.dart';
 import '../features/feed/presentation/blocs/feed/feed_bloc.dart';
 import '../features/feed/presentation/pages/feed_screen.dart';
@@ -92,14 +94,28 @@ class AppRouter {
           ),
         ),
         GoRoute(
-          path: '/chats',
-          name: 'chats',
-          builder: (context, state) => BlocProvider<ChatListBloc>(
-            create: (context) => sl<ChatListBloc>()
-              ..add(ChatGetChats(userId: authBloc.state.user.id)),
-            child: const ChatListScreen(),
-          ),
-        ),
+            path: '/chats',
+            name: 'chats',
+            builder: (context, state) => BlocProvider<ChatListBloc>(
+                  create: (context) => sl<ChatListBloc>()
+                    ..add(ChatGetChats(userId: authBloc.state.user.id)),
+                  child: const ChatListScreen(),
+                ),
+            //SUBROUTE: Le singole chat
+            routes: [
+              GoRoute(
+                name: 'chat',
+                path: ':chatId', //parent path + id della chat /chats/idchat
+                builder: (context, state) => BlocProvider<ChatBloc>(
+                  create: (context) => sl<ChatBloc>()
+                    ..add(ChatGetChat(
+                      chatId: state.pathParameters['chatId']!,
+                      userId: authBloc.state.user.id,
+                    )),
+                  child: const ChatScreen(),
+                ),
+              ),
+            ]),
       ],
       //TOP LEVEL
       redirect: (context, state) {

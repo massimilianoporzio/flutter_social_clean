@@ -5,16 +5,16 @@ abstract class ChatState extends Equatable {
   const ChatState();
 
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [];
 }
 
 class ChatLoading extends ChatState {}
 
 class ChatLoaded extends ChatState {
-  final Chat? chat;
+  final Chat chat;
   const ChatLoaded({
     required this.chat,
   });
   @override
-  List<Object?> get props => [chat];
+  List<Object> get props => [chat];
 }
