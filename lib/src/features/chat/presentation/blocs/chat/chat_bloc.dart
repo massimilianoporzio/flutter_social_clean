@@ -55,6 +55,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> with BlocLoggy {
           .copyWith(messages: List.from(state.chat.messages!)..add(message));
       //AGGIORNO LA CHAT (creo nuova chat con IL NUOVO MESSAGGIO
       _updateChat(UpdateChatParams(chat: chat)); //NELLA LOCAL DATASOURCE
+
+      emit(ChatLoaded(chat: chat));
     }
   }
 }

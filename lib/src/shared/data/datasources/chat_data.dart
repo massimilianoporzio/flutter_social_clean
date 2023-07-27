@@ -7,7 +7,8 @@ List<Map<String, dynamic>> chats = [
         'messageId': 'message_1',
         'senderId': 'user_1',
         'recipientId': 'user_2',
-        'text': 'Hey, it\'s me!',
+        'text':
+            'Hey, it\'s me!\nBlah blah blah...blah this is a long message!\nMamma mia',
         'createdAt': DateTime(2022, 08, 01, 10, 10, 10),
       },
       {

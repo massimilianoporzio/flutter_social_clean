@@ -2,6 +2,7 @@
 import 'package:bubble/bubble.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loggy/loggy.dart';
 
@@ -31,35 +32,41 @@ class ChatScreen extends StatelessWidget {
             );
           }
           if (state is ChatLoaded) {
+            ScrollController scrollController = new ScrollController();
             return Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16),
+              margin: const EdgeInsets.symmetric(horizontal: 4),
               decoration: BoxDecoration(
                   image: DecorationImage(
-                image: const AssetImage('assets/images/wallpaper3.jpg'),
+                image: const AssetImage('assets/images/wallpaper.png'),
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.2),
+                  Colors.black.withOpacity(0.6),
                   BlendMode.darken,
                 ),
               )),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ListView.builder(
-                    padding: const EdgeInsets.all(8),
-                    shrinkWrap:
-                        true, //NON si espande ma tiene solo il suo spazio
-                    itemCount: state.chat.messages!.length,
-                    itemBuilder: (context, index) {
-                      Message message = state.chat.messages![index];
-                      return _MessageCard(
-                        width: size.width,
-                        message: message,
-                      );
-                    },
-                  ),
-                  _CustomTextFormField(),
-                ],
+              child: SafeArea(
+                minimum: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        controller: scrollController,
+                        padding: const EdgeInsets.all(8),
+                        shrinkWrap:
+                            true, //NON si espande ma tiene solo il suo spazio
+                        itemCount: state.chat.messages!.length,
+                        itemBuilder: (context, index) {
+                          Message message = state.chat.messages![index];
+                          return _MessageCard(
+                            width: size.width,
+                            message: message,
+                          );
+                        },
+                      ),
+                    ),
+                    _CustomTextFormField(),
+                  ],
+                ),
               ),
             );
           } else {
@@ -78,11 +85,53 @@ class _CustomTextFormField extends StatelessWidget with UiLoggy {
 
   @override
   Widget build(BuildContext context) {
-    return MessageBar(
-      messageBarColor: Colors.amber,
-      onSend: (text) {
-        loggy.debug(text);
-      },
+    TextEditingController controller = TextEditingController();
+
+    return TextFormField(
+      controller: controller,
+      keyboardType: TextInputType.multiline,
+      style:
+          Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.black),
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 4),
+        suffixIcon: IconButton(
+          icon: const Icon(Icons.send),
+          onPressed: () {
+            if (controller.text.isNotEmpty) {
+              FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
+              context
+                  .read<ChatBloc>()
+                  .add(ChatUpdateChat(text: controller.text));
+              controller.clear();
+              SchedulerBinding.instance.addPostFrameCallback((_) {
+                controller.animateTo(controller.position.maxScrollExtent,
+                    duration: Duration(milliseconds: 500), curve: Curves.ease);
+              });
+            }
+          },
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "Type your text here...",
+        border: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.black),
+            borderRadius: BorderRadius.circular(10.0)),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red.shade900),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.black),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.grey),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
     );
   }
 }
@@ -116,7 +165,7 @@ class _MessageCard extends StatelessWidget {
         ? Theme.of(context).colorScheme.primary
         : Theme.of(context).colorScheme.secondary;
     return Bubble(
-      stick: true,
+      stick: false,
       alignment: alignment,
       margin: BubbleEdges.only(top: isFirstMessage ? 0 : 10),
       color: color,
@@ -125,12 +174,32 @@ class _MessageCard extends StatelessWidget {
               ? BubbleNip.leftTop
               : BubbleNip.rightTop
           : BubbleNip.no,
-      child: Text(
-        message.text,
-        style: Theme.of(context)
-            .textTheme
-            .bodyMedium!
-            .copyWith(color: Colors.black),
+      child: Container(
+        constraints: BoxConstraints(maxWidth: 0.5 * width),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              message.text,
+              textAlign: TextAlign.start,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Spacer(),
+                Text(
+                  '${message.createdAt.hour}:${message.createdAt.minute}',
+                  textAlign: TextAlign.end,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
