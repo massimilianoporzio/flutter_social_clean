@@ -107,8 +107,7 @@ class _CustomTextFormField extends StatelessWidget with UiLoggy {
                   .add(ChatUpdateChat(text: controller.text));
               controller.clear();
               SchedulerBinding.instance.addPostFrameCallback((_) {
-                controller.animateTo(controller.position.maxScrollExtent,
-                    duration: Duration(milliseconds: 500), curve: Curves.ease);
+                //
               });
             }
           },
